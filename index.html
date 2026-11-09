@@ -695,31 +695,76 @@ $('applyBtn').onclick=()=>{
       WavePay — 09769797203<br>
       <b class="gold" style="font-size:16px">သင်တန်းကြေး 20,000 Ks</b>
     </div>
+    <div id="enrollError" class="notice red-notice hidden"></div>
     <div class="field"><label>ငွေလွှဲအမည်</label><input id="payName" placeholder="ငွေလွှဲခဲ့သည့်အမည်"></div>
     <div class="field"><label>ငွေလွှဲခဲ့သော ဖုန်းနံပါတ်</label><input id="payPhone" placeholder="09xxxxxxxxx"></div>
     <div class="field"><label>Transaction ID / ငွေလွှဲအမှတ်</label><input id="payTxn" placeholder="Transaction ID"></div>
-    <div class="field"><label>ငွေလွှဲ Screenshot</label><input id="payProof" type="file" accept="image/*"></div>
+    <div class="field"><label>ငွေလွှဲ Screenshot (ရွေးချယ်နိုင် - မဖြစ်မနေ မလိုပါ)</label><input id="payProof" type="file" accept="image/*"></div>
     <button class="btn" id="sendEnroll" style="width:100%;margin-top:8px">📤 လျှောက်လွှာပို့မည်</button>
+    <button class="btn secondary" id="debugEnroll" style="width:100%;margin-top:8px;font-size:12px">🔧 Firebase ချိတ်ဆက်မှု စစ်ဆေးရန်</button>
   `);
+
+  // 🔧 Debug button - ဘာမှန်း မသိရင် ဒါကိုနှိပ်ကြည့်
+  $('debugEnroll').onclick=async()=>{
+    const errEl=$('enrollError');
+    errEl.classList.remove('hidden');
+    errEl.innerHTML='🔧 စစ်ဆေးနေသည်…';
+    const results=[];
+    results.push(`✅ Login: ${currentUser.email||'unknown'}`);
+    try{
+      const testRef=db.ref('_test_'+currentUser.uid);
+      await testRef.set({ts:Date.now()});
+      await testRef.remove();
+      results.push('✅ Database ရေးနိုင်သည်');
+    }catch(e){
+      results.push(`❌ Database ရေးမရပါ: ${e.code||e.message}<br>→ Firebase Rules ကို စစ်ပါ`);
+    }
+    try{
+      const blob=new Blob(['test'],{type:'text/plain'});
+      const ref=storage.ref().child('_test/'+currentUser.uid+'.txt');
+      await ref.put(blob);
+      await ref.delete();
+      results.push('✅ Storage ရေးနိုင်သည်');
+    }catch(e){
+      results.push(`⚠ Storage ရေးမရပါ: ${e.code||e.message}<br>→ Screenshot မပါဘဲ ပို့နိုင်ပါသည်`);
+    }
+    errEl.innerHTML='<b>စစ်ဆေးမှု ရလဒ်</b><br><br>'+results.join('<br><br>');
+  };
+
   $('sendEnroll').onclick=async()=>{
+    const btn=$('sendEnroll'), errEl=$('enrollError');
+    errEl.classList.add('hidden');
     try{
       const name=$('payName').value.trim();
       const phone=$('payPhone').value.trim();
       const txn=$('payTxn').value.trim();
       const file=$('payProof').files[0];
-      if(!name||!phone||!txn||!file) throw Error('အချက်အလက်အားလုံးနှင့် Screenshot ထည့်ပေးပါ။');
-      $('sendEnroll').disabled=true;
-      $('sendEnroll').textContent='ပို့နေသည်…';
-      const proof=await uploadFile(file,'payment-proofs/'+currentUser.uid);
+      if(!name||!phone||!txn) throw Error('အမည်၊ ဖုန်းနံပါတ် နှင့် Transaction ID အားလုံး ဖြည့်ပါ။');
+      btn.disabled=true;
+
+      let proof='';
+      if(file){
+        btn.textContent='📷 Screenshot တင်နေသည်…';
+        try{
+          proof=await uploadFile(file,'payment-proofs/'+currentUser.uid);
+        }catch(uploadErr){
+          console.warn('Upload failed:',uploadErr);
+          proof='';
+          toast('⚠ Screenshot တင်၍မရပါ။ မပါဘဲ ဆက်ပို့ပါမည်။',5000);
+        }
+      }
+
+      btn.textContent='💾 သိမ်းနေသည်…';
       await db.ref('enrollments/'+currentUser.uid).set({
-        uid:currentUser.uid, email:currentUser.email||'',
+        uid:currentUser.uid,
+        email:currentUser.email||'',
         name, phone, txn, proof, status:'pending', amount:20000,
         createdAt:firebase.database.ServerValue.TIMESTAMP
       });
+
       enrollStatus='pending'; approved=false;
       $('modal').classList.remove('show');
       renderLessons();
-      // ရှင်းရှင်းလင်းလင်း ပြပေးမယ့် modal
       openModal('✅ လျှောက်လွှာ ပို့ပြီးပါပြီ',
         `<div class="notice gold-notice" style="font-size:15px;line-height:1.9">
           <b>Admin ခွင့်ပြုချက်ကို စောင့်ပါ။</b><br>
@@ -731,9 +776,17 @@ $('applyBtn').onclick=()=>{
       );
       $('closeAfterEnroll').onclick=()=>$('modal').classList.remove('show');
     }catch(e){
-      toast(e.message,4500);
-      $('sendEnroll').disabled=false;
-      $('sendEnroll').textContent='📤 လျှောက်လွှာပို့မည်';
+      console.error('Enrollment submit failed:',e);
+      let msg='လျှောက်လွှာ ပို့၍မရပါ။<br>';
+      if(e.code==='PERMISSION_DENIED' || /permission/i.test(e.message||'')){
+        msg+='<b>Database ရေးခွင့်မရှိပါ။</b><br>Firebase Console → Realtime Database → Rules မှာ ရေးခွင့်ပြုထားရပါမယ်။';
+      }else{
+        msg+='<b>Error:</b> '+safe(e.message||'မသိသော error');
+      }
+      errEl.innerHTML='❌ '+msg;
+      errEl.classList.remove('hidden');
+      btn.disabled=false;
+      btn.textContent='📤 လျှောက်လွှာပို့မည်';
     }
   };
 };
@@ -952,21 +1005,47 @@ async function renderAdmin(){
   const root=$('adminContent');
   root.innerHTML='<div class="loading-box"><div class="spinner"></div>ဖွင့်နေသည်…</div>';
 
-  if(adminTab==='overview'){
-    try{
-      const [u,e,o]=await Promise.all([
-        db.ref('users').once('value').catch(()=>({val:()=>({})})),
-        db.ref('enrollments').once('value').catch(()=>({val:()=>({})})),
-        db.ref('orders').once('value').catch(()=>({val:()=>({})}))
-      ]);
-      root.innerHTML=`<div class="grid">
-        <div class="card"><span class="tag">USERS</span><h2 style="font-size:36px;margin:8px 0;color:var(--gold2)">${Object.keys(u.val()||{}).length}</h2><p class="muted">အသုံးပြုသူများ</p></div>
-        <div class="card"><span class="tag">ENROLLMENTS</span><h2 style="font-size:36px;margin:8px 0;color:var(--gold2)">${Object.keys(e.val()||{}).length}</h2><p class="muted">သင်တန်းလျှောက်လွှာများ</p></div>
-        <div class="card"><span class="tag">ORDERS</span><h2 style="font-size:36px;margin:8px 0;color:var(--gold2)">${Object.keys(o.val()||{}).length}</h2><p class="muted">ဆိုင်အော်ဒါများ</p></div>
+  if (adminTab === 'requests') {
+  try {
+    const snap = await db.ref('enrollments').once('value');
+    const items = Object.entries(snap.val() || {});
+    if (items.length === 0) {
+      root.innerHTML = `<div class="card" style="text-align:center;padding:30px">
+        <h3>📭 လျှောက်လွှာ မရှိသေးပါ</h3>
+        <p class="muted">ဒါက ဖြစ်နိုင်သော အကြောင်းရင်းများ:</p>
+        <ul class="muted" style="text-align:left;max-width:420px;margin:12px auto;line-height:2">
+          <li>မည်သူမှ လျှောက်လွှာ မတင်ရသေးပါ</li>
+          <li><b>Database Rules</b> က လျှောက်လွှာတင်သူကို ရေးခွင့်မပြုထားပါ</li>
+          <li>သင့် Email က Admin စာရင်းထဲ မပါသေးပါ</li>
+        </ul>
       </div>`;
-    }catch(e){root.innerHTML='<div class="card">Overview ဖွင့်မရပါ: '+safe(e.message)+'</div>'}
+    } else {
+      root.innerHTML = items.map(([uid, x]) => `
+        <div class="card" style="margin-bottom:12px">
+          <div class="split">
+            <b>${safe(x.name||x.email)}</b>
+            <span class="pill ${x.status==='approved'?'green':x.status==='rejected'?'red':''}">${safe(x.status||'pending')}</span>
+          </div>
+          <p class="muted">${safe(x.email)}<br>ဖုန်း: ${safe(x.phone)}<br>Txn: ${safe(x.txn)}</p>
+          ${x.proof?`<a href="${safe(x.proof)}" target="_blank" rel="noopener">🖼 ငွေလွှဲ Screenshot ကြည့်ရန်</a>`:'<p class="muted small">(Screenshot မပါ)</p>'}
+          <div class="actions">
+            <button class="btn" onclick="approveEnroll('${uid}')">✓ ခွင့်ပြုမည်</button>
+            <button class="btn danger" onclick="rejectEnroll('${uid}')">✕ ပယ်ဖျက်မည်</button>
+          </div>
+        </div>`).join('');
+    }
+  } catch (e) {
+    console.error('Admin read enrollments failed:', e);
+    root.innerHTML = `<div class="card" style="border-left:3px solid var(--red)">
+      <h3 style="color:var(--red)">❌ လျှောက်လွှာများ ဖတ်၍မရပါ</h3>
+      <p class="muted"><b>Error:</b> ${safe(e.code||'')} — ${safe(e.message||'')}</p>
+      <div class="notice red-notice">
+        <b>ဖြေရှင်းရန်:</b> Firebase Console → Realtime Database → Rules မှာ 
+        <code>enrollments</code> node အတွက် ဖတ်ခွင့်ပြုရပါမယ်။
+      </div>
+    </div>`;
   }
-
+}
   if(adminTab==='lessons'){
     root.innerHTML=`
       <div class="card">
