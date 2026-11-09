@@ -2,1266 +2,344 @@
 <html lang="my">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LearnWell — AI Video Class</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Video Class</title>
   <style>
-:root{
-  --bg:#11110f; --panel:#1b1b18; --panel2:#22221e; --line:#3b3932;
-  --gold:#eab16e; --gold2:#f3c58e; --text:#f5f1e9; --muted:#aaa49a;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Myanmar",sans-serif;line-height:1.8}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-.wrap{max-width:1400px;margin:auto;padding:16px}
-
-/* ---------- header ---------- */
-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:sticky;top:0;z-index:30;
-  background:rgba(17,17,15,.92);backdrop-filter:blur(8px);padding:10px 0}
-.brand{font-size:23px;font-weight:900;color:var(--gold);white-space:nowrap}
-.search{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:25px;padding:10px 16px;color:#fff;outline:none;min-width:120px}
-.search:focus{border-color:var(--gold)}
-.btn{display:inline-block;background:#2b2923;color:#fff;border:1px solid #514a3d;padding:9px 14px;border-radius:9px;transition:.15s}
-.btn:hover{background:#37342c}
-.gold{background:var(--gold);color:#24190f;border:0;font-weight:bold}
-.gold:hover{background:#f0be83}
-
-/* ---------- hero ---------- */
-.hero{background:linear-gradient(110deg,#80542f,#493321 65%,#30271e);border-radius:20px;padding:26px 28px;
-  display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
-.hero h1{font-size:clamp(24px,4vw,36px);line-height:1.45;margin:8px 0}
-.hero p{font-size:13px;color:#f1dfca;max-width:560px}
-.hero small{color:#ffd9a8}
-.hero-cards{display:flex;gap:10px}
-.skill{background:#fff8ed;color:#29231c;width:110px;height:140px;padding:12px;border-radius:12px;
-  display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
-.skill:hover{transform:translateY(-4px)}
-.skill:nth-child(2){background:#efbd88}
-.skill b{font-size:14px;line-height:1.4}
-.skill span{text-align:right;font-size:32px}
-
-/* ---------- progress ---------- */
-.progress{margin:15px 0;background:#1c1c19;border:1px solid #393832;border-radius:12px;padding:12px 16px}
-.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#ccc4b8}
-.bar{height:7px;background:#3b3932;border-radius:20px;margin-top:8px;overflow:hidden}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#e8ad68,#f7d6a6);transition:width .5s}
-
-/* ---------- layout ---------- */
-.layout{display:grid;grid-template-columns:270px 1fr;gap:17px;align-items:start}
-.side,.main{background:var(--panel);border:1px solid var(--line);border-radius:16px}
-.side{padding:14px;position:sticky;top:70px}
-.side-brand{color:var(--gold);font-weight:bold;font-size:18px;margin:4px 8px 14px}
-.side-title{display:flex;justify-content:space-between;font-size:13px;margin-bottom:9px;color:#d8d1c6}
-.lesson-list{display:grid;gap:5px;max-height:56vh;overflow:auto;padding-right:2px}
-.lesson-list::-webkit-scrollbar{width:6px}
-.lesson-list::-webkit-scrollbar-thumb{background:#3b3932;border-radius:5px}
-.lesson-btn{display:flex;align-items:center;gap:9px;text-align:left;background:transparent;color:#fff;
-  border:1px solid transparent;border-radius:9px;padding:8px;width:100%;transition:.15s}
-.lesson-btn:hover{background:#292822}
-.lesson-btn.active{background:#393026;border-color:#795c3a}
-.lesson-btn.locked{opacity:.4;cursor:not-allowed}
-.num{width:30px;height:30px;display:grid;place-items:center;flex-shrink:0;background:#36342e;
-  border-radius:8px;color:#eab779;font-size:12px;font-weight:bold}
-.lesson-btn.done .num{background:#28543e;color:#a8efc7}
-.lesson-btn strong{font-size:11.5px;display:block;line-height:1.5}
-.lesson-btn small{font-size:10px;color:#aaa49a}
-.note{font-size:11px;color:#aaa49a;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
-
-.main{padding:22px;min-height:600px}
-.empty{text-align:center;padding:60px 10px}
-.empty h2{margin:8px 0}
-.empty p{color:var(--muted);font-size:14px}
-
-/* ---------- lesson content ---------- */
-.back{font-size:13px;margin-bottom:16px}
-.tag{display:inline-block;background:#382f24;color:#edbb81;border-radius:20px;padding:4px 12px;font-size:11px}
-h2{font-size:23px;line-height:1.5;margin:10px 0 3px}
-.meta{font-size:11px;color:var(--muted);letter-spacing:.5px}
-.cover{margin:17px 0;background:linear-gradient(120deg,#694729,#28231d);border-radius:14px;min-height:130px;
-  display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding:14px}
-.cover span{font-size:60px}
-.cover b{font-size:18px;line-height:1.5;letter-spacing:1px}
-.intro{background:#26241f;border:1px solid #403b31;padding:15px;border-radius:12px;font-size:14px;margin:16px 0}
-.section{margin:24px 0}
-.section h3{font-size:16px;color:#efbd83;margin:0 0 10px}
-.section p,.section li{font-size:14px;color:#e0d9cf}
-.section li{margin:7px 0}
-.tip{background:#202b24;border:1px solid #3b5847;padding:13px;border-radius:11px;font-size:13px;margin:15px 0}
-.prompt{background:#11110f;border:1px solid #514535;padding:15px;border-radius:11px;white-space:pre-wrap;
-  font-size:13px;color:#f0d7b5;overflow-wrap:anywhere;font-family:"Courier New",monospace;line-height:1.7}
-.copyrow{text-align:right;margin-top:8px}
-.copy{background:#393026;color:#f3c58e;border:0;padding:7px 13px;border-radius:8px;font-size:12px}
-.copy:hover{background:#4a3d2d}
-.task{background:#26241f;border:1px dashed #826644;padding:15px;border-radius:11px;font-size:13px}
-.task label{display:flex;gap:10px;margin-top:12px;align-items:flex-start;cursor:pointer}
-.task input{width:18px;height:18px;accent-color:var(--gold);margin-top:3px;flex-shrink:0}
-.video{margin:18px 0;background:#11110f;border:1px solid #403b31;border-radius:12px;padding:14px}
-.video h3{font-size:15px;color:#efbd83;margin:0 0 10px}
-.video iframe,.video video{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;display:block;margin-bottom:10px}
-.video a{color:#efbd83}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
-.gallery img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:10px;border:1px solid #403b31;cursor:zoom-in;transition:.2s}
-.gallery img:hover{transform:scale(1.03);border-color:var(--gold)}
-.nav{display:flex;justify-content:space-between;gap:10px;margin-top:26px;flex-wrap:wrap}
-.nav .btn{min-width:130px;text-align:center}
-
-/* ---------- admin ---------- */
-.admin-card{background:#1f1f1b;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
-.admin-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.admin-head b{font-size:14px}
-.field{margin:10px 0}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-.field input[type=text],.field textarea,.field input[type=password]{width:100%;padding:10px 12px;background:#111;
-  color:#fff;border:1px solid #555;border-radius:8px;outline:none}
-.field textarea{min-height:70px;resize:vertical;font-family:monospace;font-size:12.5px}
-.field input:focus,.field textarea:focus{border-color:var(--gold)}
-.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.thumb{position:relative;width:70px}
-.thumb img{width:70px;height:100px;object-fit:cover;border-radius:8px;border:1px solid #403b31}
-.thumb button{position:absolute;top:-6px;right:-6px;background:#a33;color:#fff;border:0;width:22px;height:22px;
-  border-radius:50%;font-size:12px;line-height:1;padding:0}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.row .btn{flex-shrink:0}
-
-/* ---------- modal / lightbox ---------- */
-.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:15px;z-index:60}
-.modal.show{display:flex}
-.modal-box{background:#20201c;border:1px solid #5b4b36;border-radius:15px;padding:22px;width:100%;max-width:400px}
-.modal-box h3{margin:0 0 6px}
-.modal-box p{font-size:13px;color:var(--muted);margin:0 0 10px}
-.modal-box input{width:100%;padding:12px;background:#111;color:#fff;border:1px solid #555;border-radius:8px;margin-bottom:12px;outline:none}
-.err{color:#ff9999;font-size:12px;margin:8px 0 0;min-height:18px}
-.lightbox{position:fixed;inset:0;background:#000e;display:none;align-items:center;justify-content:center;z-index:70;padding:20px;cursor:zoom-out}
-.lightbox.show{display:flex}
-.lightbox img{max-width:100%;max-height:100%;border-radius:10px}
-
-/* ---------- AI assistant ---------- */
-.fab{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;border:0;
-  background:linear-gradient(140deg,#eab16e,#c98c47);color:#24190f;font-size:26px;z-index:50;
-  box-shadow:0 8px 24px #0009;transition:.2s}
-.fab:hover{transform:scale(1.08)}
-.ai-panel{position:fixed;right:18px;bottom:86px;width:370px;max-width:calc(100vw - 24px);height:520px;max-height:calc(100vh - 120px);
-  background:#181815;border:1px solid #4a4136;border-radius:16px;display:none;flex-direction:column;overflow:hidden;z-index:55;
-  box-shadow:0 16px 50px #000b}
-.ai-panel.show{display:flex}
-.ai-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#22201b;border-bottom:1px solid #3b3932}
-.ai-head b{font-size:14px;color:var(--gold)}
-.ai-head small{display:block;font-size:10.5px;color:var(--muted)}
-.ai-head button{background:transparent;border:0;color:#ccc;font-size:16px;padding:4px 8px}
-.ai-body{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:88%;padding:10px 13px;border-radius:12px;font-size:13px;white-space:pre-wrap;line-height:1.75;overflow-wrap:anywhere}
-.msg.bot{background:#26241f;border:1px solid #3f3a31;align-self:flex-start;border-bottom-left-radius:3px}
-.msg.user{background:#4a3a26;color:#ffe8cd;align-self:flex-end;border-bottom-right-radius:3px}
-.ai-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}
-.ai-chips button{background:#2b2923;border:1px solid #4a4338;color:#e6c9a4;font-size:11px;padding:5px 10px;border-radius:20px}
-.ai-chips button:hover{background:#3a352c}
-.ai-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #3b3932;background:#22201b}
-.ai-input input{flex:1;padding:10px 12px;border-radius:20px;border:1px solid #4a4338;background:#111;color:#fff;outline:none;font-size:13px}
-.ai-input input:focus{border-color:var(--gold)}
-.ai-input button{border-radius:50%;width:40px;height:40px;border:0;background:var(--gold);color:#24190f;font-size:15px}
-.ai-set{padding:10px 12px;background:#1f1d18;border-top:1px solid #3b3932;display:none}
-.ai-set.show{display:block}
-.ai-set input{width:100%;padding:8px 10px;background:#111;color:#fff;border:1px solid #4a4338;border-radius:8px;font-size:12px;margin-bottom:6px;outline:none}
-.ai-set small{font-size:10.5px;color:var(--muted);display:block;margin-bottom:6px}
-
-.help{text-align:center;color:var(--muted);font-size:12px;padding:24px 10px}
-.help a{color:var(--gold)}
-
-@media(max-width:850px){
-  .layout{grid-template-columns:1fr}
-  .side{position:static}
-  .lesson-list{grid-template-columns:repeat(2,1fr);max-height:300px}
-  .hero-cards{display:none}
-}
-@media(max-width:520px){
-  .wrap{padding:10px}
-  .brand{font-size:19px}
-  .search{order:3;flex-basis:100%}
-  .hero{padding:20px}
-  .main{padding:15px}
-  .lesson-list{grid-template-columns:1fr}
-  h2{font-size:20px}
-  .ai-panel{right:8px;left:8px;width:auto;bottom:80px;height:70vh}
-  .fab{right:14px;bottom:14px}
-}
-
-/* ---------- LearnWell 2026 refresh ---------- */
-:root{--gold:#f2bd78;--gold2:#ffe0b4;--bg:#0c1018;--panel:#141b27;--panel2:#1b2635;--line:#2d3a4d}
-body{background:radial-gradient(ellipse at 12% 0%,#1d2b3e 0%,#0c1018 48%);color:#f6f2eb}
-.brand{letter-spacing:.4px}
-.hero{background:linear-gradient(120deg,#8b552c,#43304a 60%,#1c3850);box-shadow:0 18px 40px #0005}
-.side,.main,.admin-card{background:rgba(20,27,39,.96);border-color:#2d3a4d}
-.side{box-shadow:0 12px 30px #0003}
-.side-pages{display:grid;gap:7px;margin:0 0 15px}
-.side-pages button{width:100%;text-align:left;background:#1b2635;color:#e8e1d7;border:1px solid #33445a;border-radius:10px;padding:10px 12px;font-weight:700}
-.side-pages button:hover,.side-pages button.active{background:linear-gradient(100deg,#4b3828,#263c52);border-color:#c08b52;color:#ffe0b4}
-.side-pages .tiny{font-size:10px;color:#aeb9c8;display:block;font-weight:400}
-.admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
-.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.editor-grid .wide{grid-column:1/-1}
-.editor-grid input,.editor-grid textarea,.lab textarea,.lab input{width:100%;background:#0c121c;color:#fff;border:1px solid #3a4a60;border-radius:10px;padding:11px;outline:none}
-.editor-grid textarea{min-height:100px;resize:vertical}
-.editor-grid label,.lab label{display:block;color:#c5cbd4;font-size:12px;margin:0 0 6px}
-.editor-grid input:focus,.editor-grid textarea:focus,.lab textarea:focus{border-color:var(--gold)}
-.lesson-editor-card{border:1px solid #344258;border-radius:14px;padding:16px;background:linear-gradient(145deg,#182334,#121923);margin:12px 0}
-.lesson-editor-card h3{margin:0 0 10px;color:#ffd49e}
-.lab{background:linear-gradient(145deg,#172337,#121923);border:1px solid #344258;border-radius:16px;padding:18px;margin:14px 0}
-.lab textarea{min-height:150px;resize:vertical}
-.lab-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
-.lab-preview img{width:100%;max-height:240px;object-fit:contain;background:#080b10;border-radius:10px;border:1px solid #344258}
-.ai-panel{background:#111a28;border-color:#42516a}
-.ai-head{background:#1a2738}
-@media(max-width:700px){.editor-grid{grid-template-columns:1fr}.editor-grid .wide{grid-column:auto}.side-pages{grid-template-columns:1fr 1fr}.side{position:relative;top:auto}}
-
+:root{--bg:#090b10;--panel:#121620;--panel2:#191f2b;--gold:#e7b84f;--gold2:#ffdc83;--text:#f5f5f5;--muted:#aab1bf;--line:#293140;--red:#ff7070;--green:#66d6a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#20202a 0,#090b10 40%);color:var(--text);font-family:system-ui,"Noto Sans Myanmar",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:1100px;margin:auto;padding:16px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 18px}.brand{font-weight:900;letter-spacing:1px;color:var(--gold);font-size:20px}.hamb{background:var(--panel2);border:1px solid var(--line);color:white;border-radius:12px;padding:10px 14px;font-size:20px}.menu{display:none;position:absolute;right:16px;top:62px;z-index:10;background:#171c27;border:1px solid var(--line);padding:8px;border-radius:14px;min-width:180px;box-shadow:0 12px 35px #0009}.menu.show{display:grid}.menu button{background:transparent;color:white;text-align:left;padding:12px;border-radius:9px}.menu button:hover{background:#292f3c}.hero{border:1px solid #54452a;background:linear-gradient(135deg,#211b10,#11151e 65%);border-radius:22px;padding:24px;margin-bottom:18px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;font-weight:800}.hero h1{font-size:clamp(25px,6vw,42px);margin:10px 0}.hero p{color:#d5d0c4;line-height:1.8;margin:5px 0}.hero .lines{font-weight:700;color:#f5e3b7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{background:linear-gradient(160deg,#171d28,#10141c);border:1px solid var(--line);border-radius:17px;padding:17px;min-width:0}.card h3{margin:6px 0 9px}.muted{color:var(--muted);font-size:14px;line-height:1.7}.gold{color:var(--gold)}.btn{padding:11px 15px;border-radius:11px;background:linear-gradient(135deg,var(--gold2),#bd8526);color:#17120a;font-weight:800}.btn.secondary{background:#252d3b;color:#fff;border:1px solid #3a4557}.btn.danger{background:#51252b;color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.section{display:none}.section.active{display:block}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0}.section-title h2{margin:0}.field{display:grid;gap:6px;margin:10px 0}.field label{font-size:13px;color:#d7c18f}.field input,.field textarea,.field select{width:100%;padding:12px;border-radius:10px;border:1px solid #354052;background:#0c1119;color:white;outline:none}.field textarea{min-height:100px;resize:vertical}.pill{display:inline-block;border:1px solid #66532d;color:var(--gold2);padding:4px 9px;border-radius:99px;font-size:12px}.notice{padding:12px;border-radius:12px;background:#1c2430;color:#d9e0eb;margin:10px 0;line-height:1.7}.status{font-size:13px;color:var(--muted);margin:8px 0}.lesson-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.lesson-row .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#302719;color:var(--gold);font-weight:900;flex-shrink:0}.lesson-main{display:flex;align-items:center;gap:10px;min-width:0}.lesson-main div:last-child{min-width:0}.lesson-main h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.thumb{width:100%;max-height:220px;object-fit:cover;border-radius:12px;background:#090b10}.media{width:100%;max-height:380px;border-radius:12px;background:#000}.hidden{display:none!important}.bar{height:7px;background:#2a303b;border-radius:20px;overflow:hidden;margin:12px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#b78327,#ffe19a)}.foot{text-align:center;color:#737d8c;padding:28px 0;font-size:12px}.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.tag{font-size:11px;color:var(--gold);font-weight:800}.modal{position:fixed;inset:0;background:#000b;z-index:30;display:none;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.modalbox{width:min(520px,100%);max-height:90vh;overflow:auto;background:#151b26;border:1px solid #51452e;border-radius:18px;padding:20px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:50;background:#252e3c;border:1px solid #586579;border-radius:12px;padding:12px 18px;display:none;max-width:90%;text-align:center}.toast.show{display:block}.lang{background:#202735;color:#fff;border:1px solid #3b4657;border-radius:9px;padding:8px}.adminnav{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}.adminnav button{white-space:nowrap}.small{font-size:12px}.split{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}a{color:var(--gold2)}
+ 
+/* Premium visual enhancement */
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 12% 18%,#b8872520,transparent 32%),radial-gradient(ellipse at 88% 48%,#5b4b9220,transparent 30%)}
+.brand{font-size:22px;text-shadow:0 0 22px #e7b84f55}
+.hero{position:relative;overflow:hidden;box-shadow:0 18px 55px #0007,inset 0 1px #ffffff12}
+.hero:after{content:"✦";position:absolute;right:22px;top:10px;font-size:110px;color:#e7b84f18;line-height:1;pointer-events:none}
+.card{box-shadow:0 10px 28px #0003;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-2px);border-color:#806632;box-shadow:0 15px 35px #0006}
+.btn{box-shadow:0 5px 16px #d49b3030;transition:transform .18s,filter .18s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn.google{background:#fff;color:#202124;border:1px solid #dadce0;box-shadow:0 5px 18px #0003;display:flex;align-items:center;justify-content:center;gap:11px;width:100%;padding:13px}
+.google-mark{width:19px;height:19px;display:inline-grid;place-items:center;font-weight:900;font-size:19px;color:#4285f4}
+.auth-head{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.auth-logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#ffe6a1,#b77b20);color:#17120a;font-size:23px;box-shadow:0 8px 22px #d59d3c35}
+.auth-divider{display:flex;align-items:center;gap:12px;color:#798393;font-size:12px;margin:14px 0}
+.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#303949;flex:1}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:#d8aa4b;box-shadow:0 0 0 3px #d8aa4b20}
+@media(max-width:520px){.wrap{padding:12px}.hero{padding:20px}.hero:after{font-size:75px;right:12px}.top{align-items:flex-start}.brand{font-size:18px}}
+ 
 </style>
  </head>
  <body>
   <div class="wrap">
-   <header>
-    <div class="brand">LearnWell.</div>
-    <input class="search" id="search" placeholder="🔎 သင်ခန်းစာရှာရန်..." oninput="searchLessons(this.value)">
-    <button class="btn" onclick="location.hash='#/lab'">🧪 လက်တွေ့</button>
-    <button class="btn" id="adminBtn" onclick="adminAction()">Admin ဝင်ရန်</button>
+   <header class="top">
+    <div>
+     <div class="brand">✦ AI VIDEO CLASS</div>
+     <div class="small muted">Learn • Create • Improve</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+     <select class="lang" id="language" aria-label="Language"><option value="my">မြန်မာ</option><option value="en">English</option></select>
+     <button class="hamb" id="menuBtn">☰</button>
+    </div>
+    <nav class="menu" id="menu">
+     <button data-page="home">⌂ မူလစာမျက်နှာ</button>
+     <button data-page="lessons">▤ Lesson</button>
+     <button data-page="shop">▣ စျေးဆိုင်</button>
+     <button data-page="assistant">✧ AI Assistant</button>
+     <button data-page="account">♙ အကောင့်</button>
+     <button data-page="admin" id="adminMenu" class="hidden">⚙ Admin</button>
+    </nav>
    </header>
-   <div id="view"></div>
-   <div class="help">
-    အကူအညီလိုပါက <a href="https://t.me/zypher998" target="_blank" rel="noopener">@zypher998</a> ကို ဆက်သွယ်ပါ။
+   <section id="home" class="section active">
+    <div class="hero">
+     <div class="eyebrow">WELCOME TO THE CREATIVE WORLD</div>
+     <h1>AI Video Class</h1>
+     <p class="lines">AI နည်းပညာကို လက်တွေ့အသုံးချတတ်စေမယ်။
+      <br>
+      ကိုယ်တိုင်ပုံဖန်တီး၊ Video ဖန်တီးတတ်စေမယ်။
+      <br>
+      Prompt ရေးသားခြင်းနဲ့ Error ဖြေရှင်းခြင်းကို လေ့လာမယ်။</p>
+     <div class="actions">
+      <button class="btn" data-goto="lessons">သင်ခန်းစာလေ့လာရန်</button>
+      <button class="btn secondary" data-goto="assistant">AI Assistant သုံးရန်</button>
+     </div>
+    </div>
+    <div class="grid">
+     <div class="card">
+      <div class="tag">01 / LEARN</div>
+      <h3>သင်ခန်းစာ ၅ ခု</h3>
+      <p class="muted">Admin ထည့်သွင်းထားတဲ့ စာ၊ ပုံ၊ ဗီဒီယိုများကို အဆင့်လိုက်လေ့လာပါ။</p>
+     </div>
+     <div class="card">
+      <div class="tag">02 / AI TOOLS</div>
+      <h3>Prompt Helper</h3>
+      <p class="muted">Prompt ကို စနစ်တကျ ပြန်လည်ပြင်ဆင်ပြီး Error အကြောင်းရင်းများကို စစ်ဆေးပါ။</p>
+     </div>
+     <div class="card">
+      <div class="tag">03 / SHOP</div>
+      <h3>Online Shop</h3>
+      <p class="muted">သင်တန်းနဲ့ ဆက်စပ်ပစ္စည်းများကို ဝယ်ယူနိုင်ပါသည်။</p>
+     </div>
+    </div>
+    <div class="notice">
+     သင်တန်းကြေး <b class="gold">20,000 ကျပ်</b>။ ငွေပေးသွင်းပြီး Admin အတည်ပြုပြီးမှ သင်ခန်းစာများ ဖွင့်ပေးပါမည်။
+    </div>
+   </section>
+   <section id="lessons" class="section">
+    <div class="section-title">
+     <h2>▤ သင်ခန်းစာများ</h2>
+     <span class="pill" id="enrollState">အခြေအနေစစ်ဆေးနေသည်</span>
+    </div>
+    <div class="card" id="enrollCard">
+     <h3>AI Video Class အပြည့်အစုံ</h3>
+     <div class="gold" style="font-size:26px;font-weight:900">20,000 Ks</div>
+     <p class="muted">KPay — 09979646972 (Naung Thu Tun)
+      <br>
+      WavePay — 09769797203</p>
+     <p class="muted">ငွေလွှဲပြီးပါက ငွေလွှဲအမည်၊ ဖုန်းနံပါတ်၊ Transaction ID နှင့် Screenshot တင်ပေးပါ။ Admin က စစ်ဆေးအတည်ပြုပေးပါမည်။</p>
+     <button class="btn" id="applyBtn">ပေးသွင်းပါ / သင်တန်းလျှောက်ရန်</button>
+    </div>
+    <div id="lessonProgress" class="hidden card">
+     <div class="split">
+      <b>သင်ယူမှုတိုးတက်မှု</b><span id="progressText" class="gold">0 / 5</span>
+     </div>
+     <div class="bar">
+      <span id="progressBar" style="width:0%"></span>
+     </div>
+     <p class="muted">သင်ခန်းစာတစ်ခု ပြီးဆုံးမှ နောက်တစ်ခုကို ဖွင့်နိုင်ပါမည်။</p>
+    </div>
+    <div id="lessonList" class="grid" style="margin-top:14px"></div>
+   </section>
+   <section id="shop" class="section">
+    <div class="section-title">
+     <h2>▣ စျေးဆိုင်</h2>
+     <span class="pill">ONLINE SHOP</span>
+    </div>
+    <p class="muted">Admin မှ တင်ထားသော ပစ္စည်းများကို ရွေးချယ်ဝယ်ယူနိုင်ပါသည်။</p>
+    <div id="productList" class="grid"></div>
+   </section>
+   <section id="assistant" class="section">
+    <div class="section-title">
+     <h2>✧ AI Video Assistant</h2>
+     <span class="pill">PROMPT LAB</span>
+    </div>
+    <div class="notice">ဒီ Assistant သည် အခြေခံ Prompt ပြင်ဆင်ခြင်းနှင့် Error စစ်ဆေးခြင်းကို Browser အတွင်း လုပ်ဆောင်ပေးသော အသေးစား Helper ဖြစ်သည်။ အမှန်တကယ် Generative AI အဖြေများအတွက် လုံခြုံသော Server-side AI API ချိတ်ဆက်ရန် လိုအပ်သည်။</div>
+    <div class="card">
+     <div class="field">
+      <label>သင့်ရဲ့ Prompt / Error ကို ရေးထည့်ပါ</label><textarea id="aiInput" placeholder="ဥပမာ - A young man gives a flower to a girl..."></textarea>
+     </div>
+     <div class="actions">
+      <button class="btn" id="improveBtn">Prompt ပြင်ပေးပါ</button>
+      <button class="btn secondary" id="errorBtn">Error စစ်ဆေးပါ</button>
+      <button class="btn secondary" id="clearAi">ရှင်းလင်းရန်</button>
+     </div>
+     <div class="field">
+      <label>Assistant အဖြေ</label><textarea id="aiOutput" readonly placeholder="အဖြေကို ဒီနေရာမှာ ပြပေးပါမယ်။"></textarea>
+     </div>
+     <button class="btn secondary" id="copyAi">အဖြေ Copy ကူးရန်</button>
+    </div>
+   </section>
+   <section id="account" class="section">
+    <div class="section-title">
+     <h2>♙ အကောင့်</h2>
+    </div>
+    <div id="authPanel" class="card">
+     <div class="auth-head">
+      <div class="auth-logo">✦</div>
+      <div>
+       <div class="tag">WELCOME BACK</div>
+       <h3 style="margin:3px 0">သင့်အကောင့်သို့ ဝင်ရောက်ပါ</h3>
+       <div class="muted small">AI Video Creator Community မှ ကြိုဆိုပါတယ်</div>
+      </div>
+     </div>
+     <button class="btn google" id="googleBtn"><span class="google-mark">G</span> Google ဖြင့် ဆက်လက်ဝင်ရောက်မည်</button>
+     <div class="auth-divider">သို့မဟုတ် Email ဖြင့်</div>
+     <div class="field">
+      <label>Email</label><input id="email" type="email" placeholder="name@example.com" autocomplete="email">
+     </div>
+     <div class="field">
+      <label>Password</label><input id="password" type="password" placeholder="အနည်းဆုံး ၆ လုံး" autocomplete="current-password">
+     </div>
+     <div class="actions">
+      <button class="btn" id="loginBtn">ဝင်ရောက်မည်</button>
+      <button class="btn secondary" id="signupBtn">အကောင့်အသစ်ဖွင့်မည်</button>
+     </div>
+     <p class="muted small">Google အကောင့်ဖြင့် ပထမဆုံးဝင်ရောက်ပါက အကောင့်အသစ်ကို အလိုအလျောက် ဖန်တီးပေးပါမည်။ နောက်တစ်ကြိမ်တွင် ထို Google အကောင့်ဖြင့် ပြန်ဝင်နိုင်ပါသည်။</p>
+    </div>
+    <div id="userPanel" class="card hidden">
+     <div class="auth-head">
+      <img id="userPhoto" class="auth-logo" style="object-fit:cover" alt="Profile" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+      <div>
+       <div class="tag">SIGNED IN</div>
+       <h3 id="userEmail"></h3>
+      </div>
+     </div>
+     <p class="muted" id="userRole"></p>
+     <div class="actions">
+      <button class="btn secondary" id="logoutBtn">ထွက်မည်</button>
+     </div>
+    </div>
+   </section>
+   <section id="admin" class="section">
+    <div class="section-title">
+     <h2>⚙ Admin Dashboard</h2>
+     <span class="pill">CONTROL CENTER</span>
+    </div>
+    <div class="notice">Admin အဖြစ် သတ်မှတ်ထားသော Firebase Auth UID များသာ ဤနေရာကို အသုံးပြုနိုင်သည်။</div>
+    <div class="adminnav">
+     <button class="btn secondary" data-admin-tab="overview">အကျဉ်းချုပ်</button>
+     <button class="btn secondary" data-admin-tab="lessons">သင်ခန်းစာ</button>
+     <button class="btn secondary" data-admin-tab="products">ပစ္စည်း</button>
+     <button class="btn secondary" data-admin-tab="requests">သင်တန်းလျှောက်လွှာ</button>
+     <button class="btn secondary" data-admin-tab="orders">အော်ဒါ</button>
+    </div>
+    <div id="adminContent"></div>
+   </section>
+   <div class="foot">
+    AI VIDEO CLASS • Learn something new every day
+    <br>
+    Support: @zypher998
    </div>
   </div>
-  <!-- ================= AI ASSISTANT ================= -->
-  <button class="fab" id="aiFab" onclick="toggleAI()">🤖</button>
-  <div class="ai-panel" id="aiPanel">
-   <div class="ai-head">
-    <div>
-     <b>🤖 LearnWell AI</b> <small>Prompt ပြင် · ပြဿနာ ဖြေရှင်း</small>
-    </div>
-    <div>
-     <button onclick="toggleAISet()" title="Settings">⚙</button>
-     <button onclick="toggleAI()" title="ပိတ်">✕</button>
-    </div>
-   </div>
-   <div class="ai-set" id="aiSet">
-    <small>Gemini API Key ထည့်ထားရင် တကယ့် AI နဲ့ ဖြေပါမယ်။ မထည့်ရင် သင်ခန်းစာအခြေခံ အဖြေပေးပါမယ်။</small> <input id="aiKey" placeholder="AIza... (Gemini API Key)"> <input id="aiModel" placeholder="gemini-2.0-flash">
-    <button class="btn gold" style="font-size:12px;padding:7px 12px" onclick="saveAISet()">သိမ်းမယ်</button>
-   </div>
-   <div class="ai-body" id="aiBody"></div>
-   <div class="ai-chips">
-    <button onclick="quickAsk('မျက်နှာ မတူဘူး')">မျက်နှာ မတူဘူး</button>
-    <button onclick="quickAsk('စကားပြော မကိုက်ဘူး')">စကားပြော မကိုက်</button>
-    <button onclick="quickAsk('Video မထွက်ဘူး')">Video မထွက်</button>
-    <button onclick="quickAsk('Prompt ရေးနည်')">Prompt ရေးနည်</button>
-    <button onclick="quickAsk('Scene ခွဲနည်')">Scene ခွဲနည်</button>
-   </div>
-   <form class="ai-input" onsubmit="sendAI(event)">
-    <input id="aiInput" placeholder="မေးခွန်း ရေးပါ..." autocomplete="off">
-    <button type="submit">➤</button>
-   </form>
-  </div>
-  <!-- ================= MODAL ================= -->
   <div class="modal" id="modal">
-   <div class="modal-box">
-    <h3>🔐 Admin Login</h3>
-    <p>Admin Password ထည့်ပါ။</p>
-    <input id="adminPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
-    <div class="row">
-     <button class="btn gold" onclick="doLogin()">ဝင်မယ်</button>
-     <button class="btn" onclick="closeModal()">ပိတ်မယ်</button>
+   <div class="modalbox">
+    <div class="split">
+     <h3 id="modalTitle">အသေးစိတ်</h3>
+     <button class="btn secondary" id="closeModal">✕</button>
     </div>
-    <p class="err" id="adminError"></p>
+    <div id="modalBody"></div>
    </div>
   </div>
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-   <img id="lightboxImg" src="" alt="">
-  </div>
+  <div class="toast" id="toast"></div>
+  <!-- Firebase compat SDKs. Replace config only if using another Firebase project. -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
   <script>
-/* ==========================================================
-   1) DATA
-   ========================================================== */
-const ADMIN_PASSWORD = "admin123";   // ⚠️ client-side only — Firebase ချိတ်ပြီးရင် ဖယ်ပါ
-
-let lessons = [
-{
-title:"သင်တန်းမိတ်ဆက်",
-cat:"စတင်လေ့လာရန်",icon:"🎬",
-intro:"ဒီသင်တန်းမှာ ဇာတ်လမ်းစိတ်ကူးကနေ စပြီး ဇာတ်ကောင်ပုံဖန်တီးခြင်း၊ Scene ပုံတစ်ပုံချင်း ထုတ်ခြင်း၊ Google Flow မှာ ပုံကို Video ပြောင်းခြင်း၊ စကားပြောထည့်ခြင်းနဲ့ တည်းဖြတ်ခြင်းအထိ လေ့လာပါမယ်။",
-steps:[
-"သင်ခန်းစာတစ်ခုကို အစမှအဆုံး ဖတ်ပါ။",
-"ပေးထားတဲ့ Prompt ကို ကူးယူပြီး ကိုယ့်ဇာတ်လမ်းအလိုက် ပြင်ပါ။",
-"လက်တွေ့လုပ်ဆောင်ပြီးမှ အောက်ဆုံးက အမှန်ခြစ်ပေးပါ။",
-"ပြီးသွားရင် နောက်အဆင့်ကို ဖွင့်ပေးပါမယ်။"
-],
-example:"ဒီသင်တန်းပြီးဆုံးရင် ကိုယ်ပိုင် AI ဇာတ်လမ်းတိုတစ်ခုကို စီစဉ်၊ ပုံဖန်တီး၊ Video ထုတ်ပြီး တည်းဖြတ်နိုင်ဖို့ ရည်ရွယ်ပါတယ်။",
-task:"သင်တန်းမှာ ဘာတွေသင်ရမလဲဆိုတာ ဖတ်ပြီး နောက်အဆင့်ကို ဆက်သွားပါ။"
-},
-{
-title:"ဇာတ်လမ်းစိတ်ကူးနဲ့ ဇာတ်ညွှန်းရေးနည်း",
-cat:"ဇာတ်ညွှန်း",icon:"📖",
-intro:"AI ကို မခိုင်းခင် ကိုယ်ဖန်တီးချင်တဲ့ ဇာတ်လမ်းအကြောင်းကို ရှင်းရှင်းလင်းလင်း သတ်မှတ်ပါ။ ဘယ်သူတွေပါမလဲ၊ ဘယ်နေရာမှာ ဖြစ်မလဲ၊ ဘာပြဿနာဖြစ်မလဲ၊ နောက်ဆုံး ဘယ်လိုအဆုံးသတ်မလဲဆိုတာ ရေးထားရပါမယ်။",
-steps:[
-"ဇာတ်လမ်းအမျိုးအစားရွေးပါ — အချစ်၊ မိသားစု၊ ဟာသ၊ သရဲ စသည်။",
-"ပါဝင်မယ့် ဇာတ်ကောင်အရေအတွက် သတ်မှတ်ပါ။",
-"အစ၊ အလယ်၊ အဆုံးကို စာကြောင်းတိုတိုနဲ့ ရေးပါ။",
-"ဇာတ်ကောင်တစ်ယောက်ချင်းစီရဲ့ အသက်၊ မျက်နှာ၊ ဆံပင်၊ အဝတ်အစားကို မှတ်ထားပါ။",
-"စကားပြောစာသားတွေကို သီးခြားရေးထားပါ။"
-],
-example:"ဥပမာ ဇာတ်လမ်း — ရွာမှာနေတဲ့ လူငယ်နှစ်ယောက် ချစ်ကြိုက်ကြတယ်။ မိသားစုအခက်အခဲကြောင့် ခွဲခွာရပြီး နောက်ဆုံး ပြန်ဆုံကြတယ်။",
-task:"ကိုယ်ဖန်တီးချင်တဲ့ ဇာတ်လမ်းကို အနည်းဆုံး စာကြောင်း ၅ ကြောင်း ရေးပါ။"
-},
-{
-title:"ChatGPT / Gemini မှာ ဇာတ်ကောင်ပုံထုတ်နည်း",
-cat:"AI ပုံဖန်တီးခြင်း",icon:"🖼️",
-intro:"ဇာတ်ကောင်ပုံကို Google Flow ထဲမှာ အရင်ဖန်တီးဖို့ မလိုပါဘူး။ ChatGPT ရဲ့ ပုံဖန်တီးနိုင်တဲ့ လုပ်ဆောင်ချက် ဒါမှမဟုတ် Gemini ရဲ့ ပုံဖန်တီးနိုင်တဲ့ လုပ်ဆောင်ချက်မှာ ဇာတ်ကောင်ပုံကို တစ်ပုံချင်း ထုတ်နိုင်ပါတယ်။",
-steps:[
-"ChatGPT သို့မဟုတ် Gemini ကို ဖွင့်ပါ။",
-"ပုံဖန်တီးနိုင်တဲ့ Image လုပ်ဆောင်ချက်ကို ရွေးပါ။",
-"ပထမဆုံး ဇာတ်ကောင်တစ်ယောက်တည်းရဲ့ ပုံကို ထုတ်ခိုင်းပါ။",
-"မျက်နှာ၊ ဆံပင်၊ အဝတ်အစားနဲ့ အသက်အရွယ် ကိုက်ညီမှု စစ်ပါ။",
-"မကြိုက်ရင် ပြင်ခိုင်းပါ။ အဆင်ပြေတဲ့ပုံကို ဖုန်းထဲ သိမ်းပါ။",
-"နောက်ဇာတ်ကောင်ရှိရင် သီးခြားတစ်ပုံ ထပ်ထုတ်ပါ။"
-],
-example:"Create one realistic human character portrait for a cinematic Myanmar love story.\n\nA 22-year-old Myanmar young man, short neat black hair, gentle face, wearing a simple white shirt and dark longyi. Full upper body, standing against a plain neutral background, natural skin texture, realistic photography, vertical 9:16. One person only. No text, no watermark.",
-tip:"ဇာတ်ကောင်တစ်ယောက်ချင်းစီကို တစ်ပုံစီ ထုတ်ပါ။ ပုံတစ်ပုံထဲမှာ လူအများကြီး ထည့်မခိုင်းပါနဲ့။ ပထမပုံအဆင်ပြေသွားရင် အဲဒီပုံကို မူရင်း Reference ပုံအဖြစ် သိမ်းထားပါ။",
-task:"ChatGPT သို့မဟုတ် Gemini မှာ ဇာတ်ကောင်တစ်ယောက်ရဲ့ ပုံတစ်ပုံ ထုတ်ပြီး ဖုန်းထဲ သိမ်းပါ။"
-},
-{
-title:"Character Lock — ဇာတ်ကောင်ပုံစံ မပြောင်းအောင် ထိန်းနည်း",
-cat:"Character Lock",icon:"👤",
-intro:"ဒီအဆင့်က အရေးကြီးဆုံးပါ။ ဇာတ်ကောင်တစ်ယောက်ရဲ့ အတည်ပြုပြီးသားပုံကို နောက် Scene တွေအားလုံးမှာ ပြန်အသုံးပြုရပါမယ်။ ဒါမှ မျက်နှာနဲ့ အဝတ်အစား မပြောင်းလဲနိုင်ခြေ ပိုများပါတယ်။",
-steps:[
-"ဇာတ်ကောင်တစ်ယောက်စီအတွက် အတည်ပြုပုံတစ်ပုံ ရွေးပါ။",
-"ပုံကို Boy_Main၊ Girl_Main လို မှတ်မိလွယ်တဲ့ နာမည်ပေးပြီး သိမ်းပါ။",
-"အသက်၊ မျက်နှာ၊ ဆံပင်၊ အဝတ်အစားကို စာနဲ့ မှတ်ထားပါ။",
-"Scene အသစ်လုပ်တိုင်း အဲဒီပုံကို Reference အဖြစ် ပြန်ထည့်ပါ။",
-"Reference ပုံကို မပြောင်းဘဲ အတူတူ ပြန်သုံးပါ။"
-],
-example:"Use the uploaded reference image as the exact character identity.\n\nPreserve the same face, eyes, nose, hairstyle, hair color, age, skin tone, body proportions and clothing. Do not redesign, replace or reinterpret the character. Only change the pose, expression, action, camera angle or background when requested.",
-tip:"AI က ၁၀၀ ရာခိုင်နှုန်း တူညီမယ်လို့ အာမမခံနိုင်ပါဘူး။ Reference ပုံကို အမြဲပြန်ထည့်ပြီး မျက်နှာနဲ့ အဝတ်အစား တူညီမှုကို စစ်ပါ။",
-task:"အဓိကဇာတ်ကောင်အတွက် အတည်ပြုပုံတစ်ပုံနဲ့ Character Lock စာသားကို သိမ်းထားပါ။"
-},
-{
-title:"Scene တစ်ပုံချင်း ဖန်တီးနည်း",
-cat:"AI ပုံဖန်တီးခြင်း",icon:"🎞️",
-intro:"ဇာတ်လမ်းထဲက Scene 1 အတွက် ပုံတစ်ပုံ၊ Scene 2 အတွက် ပုံတစ်ပုံဆိုပြီး ခွဲထုတ်ပါ။ Scene အသစ်တိုင်းမှာ ဇာတ်ကောင်ပုံစံ မပြောင်းအောင် အရင်သိမ်းထားတဲ့ Reference ပုံကို ပြန်ထည့်ပေးရပါမယ်။",
-steps:[
-"ဇာတ်ညွှန်းကို Scene 1၊ Scene 2၊ Scene 3 စသဖြင့် ခွဲပါ။",
-"Scene 1 အတွက် နောက်ခံ၊ လူဘယ်နှစ်ယောက်ပါမလဲ၊ ဘာလုပ်နေလဲ ရေးပါ။",
-"ဇာတ်ကောင် Reference ပုံကို ChatGPT / Gemini ထဲ ထည့်ပါ။",
-"အဲဒီပုံကို မပြောင်းဘဲ Scene လိုအပ်ချက်အတိုင်း ပုံအသစ်ဖန်တီးခိုင်းပါ။",
-"Scene 2 မှာလည်း မူရင်း Reference ပုံကို ပြန်ထည့်ပါ။",
-"ထုတ်ပြီးသား Scene ပုံတွေကို အစဉ်လိုက် သိမ်းပါ။"
-],
-example:"Create the next scene using the uploaded character reference image.\n\nKeep the exact same person, face, hairstyle and clothing. Scene: the same young man is standing near a small Myanmar village tea shop in the evening, looking toward the road. Cinematic realistic photography, natural lighting, vertical 9:16. Do not add text or watermark.",
-tip:"Scene 2 အတွက် ဇာတ်ကောင်ပုံကို အစကနေ ပြန်မဖန်တီးပါနဲ့။ ပထမဆုံး အတည်ပြုထားတဲ့ မူရင်း Reference ပုံကို ပြန်ထည့်ပြီး နောက် Scene ကို ဖန်တီးခိုင်းပါ။",
-task:"Reference ပုံတစ်ပုံကို သုံးပြီး Scene 1 နဲ့ Scene 2 အတွက် ပုံနှစ်ပုံ ထုတ်ကြည့်ပါ။"
-},
-{
-title:"ဇာတ်ညွှန်းကို AI နဲ့ Scene ခွဲခိုင်းနည်း",
-cat:"ဇာတ်ညွှန်း",icon:"🧩",
-intro:"ဇာတ်လမ်းရှည်တစ်ခုကို AI ကို ပေးပြီး ၈ စက္ကန့် သို့မဟုတ် ၁၀ စက္ကန့်အပိုင်းတွေ ခွဲခိုင်းနိုင်ပါတယ်။ Scene တစ်ခုချင်းမှာ နေရာ၊ ဇာတ်ကောင်၊ လှုပ်ရှားမှု၊ Camera နဲ့ စကားပြောစာသားကို သီးခြားဖော်ပြခိုင်းပါ။",
-steps:[
-"ဇာတ်ညွှန်းအပြည့်ကို ChatGPT / Gemini ထဲ ထည့်ပါ။",
-"Scene တစ်ခုချင်းစီကို ၈–၁၀ စက္ကန့်ခန့် ခွဲခိုင်းပါ။",
-"Scene တစ်ခုစီမှာ နေရာ၊ ဇာတ်ကောင်၊ လှုပ်ရှားမှုနဲ့ Camera ပါစေပါ။",
-"စကားပြောစာသားကို မူရင်းအတိုင်း ထိန်းခိုင်းပါ။",
-"Prompt ထဲမှာ ဇာတ်ကောင်အမည်ကို Speaker Label အဖြစ် မသုံးဖို့ ပြောပါ။"
-],
-example:"Convert my Burmese story into 8-second video scenes.\n\nFor each scene provide: location, visible characters using generic labels such as boy, girl, mother, father; action; camera movement; and exact Burmese dialogue.\n\nDo not rewrite or shorten dialogue. Do not use character names as speaker labels. Character names may appear only inside the quoted spoken dialogue.",
-task:"ကိုယ်ရေးထားတဲ့ ဇာတ်လမ်းကို AI နဲ့ အနည်းဆုံး Scene ၃ ခန်း ခွဲခိုင်းပါ။"
-},
-{
-title:"အရေးကြီး — Prompt မှာ ဇာတ်ကောင်နာမည် မသုံးနည်း",
-cat:"Prompt စည်းကမ်း",icon:"⚠️",
-intro:"Google Flow လို Video Tool တချို့မှာ ဇာတ်ကောင်ကို နာမည်တပ်ပြီး ခိုင်းရင် မလိုချင်တဲ့ ရလဒ်ထွက်နိုင်ပါတယ်။ ဒါကြောင့် Prompt ရဲ့ မြင်ကွင်းဖော်ပြချက်မှာ boy၊ girl၊ mother၊ father လို အထွေထွေ အခန်းကဏ္ဍကိုပဲ သုံးပါ။ စကားပြောစာသားအတွင်းမှာတော့ ဇာတ်ကောင်နာမည်တွေ ထည့်လို့ရပါတယ်။",
-steps:[
-"မသုံးသင့်တဲ့ပုံစံ — “Aung Aung says...” လို့ မရေးပါနဲ့။",
-"သုံးသင့်တဲ့ပုံစံ — “The boy speaks in Burmese:” လို့ စပါ။",
-"နောက်မှာ စကားပြောစာသားကို ကိုးကားအမှတ်အသားထဲ ထည့်ပါ။",
-"စကားပြောစာသားထဲမှာ “အောင်အောင်ရေ” လို့ နာမည်ခေါ်တာ ရပါတယ်။",
-"ဇာတ်ကောင်ကို ခွဲခြားဖို့ boy / girl / older woman / young man စတဲ့ label သုံးပါ။"
-],
-example:"❌ မသုံးသင့်သော Prompt\n\nAung Aung says: “အောင်အောင်ရေ ဘာလုပ်နေတာလဲ။”\n\n✅ သုံးသင့်သော Prompt\n\nThe boy speaks naturally in Burmese: “အောင်အောင်ရေ ဘာလုပ်နေတာလဲ။”\n\nThe girl listens silently and looks at the boy. Only the boy speaks. Do not add any other dialogue. Keep the exact Burmese sentence unchanged.",
-tip:"မှတ်ထားပါ — ဇာတ်ကောင်နာမည်ကို စကားပြောစာသားထဲမှာ သုံးလို့ရတယ်။ Prompt က ဘယ်သူပြောတယ်ဆိုတဲ့နေရာမှာတော့ boy / girl လိုပဲ ရေးပါ။",
-task:"ကိုယ့်ဇာတ်လမ်းထဲက စကားပြောစာကြောင်းတစ်ခုကို boy / girl label သုံးပြီး ပြန်ရေးပါ။"
-},
-{
-title:"Google Flow ထဲမှာ Reference ပုံထည့်နည်း",
-cat:"Google Flow",icon:"🌊",
-intro:"ပုံတွေကို ChatGPT / Gemini မှာ အရင်ထုတ်ပြီး သိမ်းထားပါ။ ပြီးမှ Google Flow ကိုဖွင့်ပြီး Image-to-Video လုပ်ဆောင်ချက်မှာ မူရင်း Scene ပုံကို ထည့်ပါ။ Flow ထဲမှာ ဇာတ်ကောင်ပုံအသစ် ပြန်ထုတ်စရာမလိုပါဘူး။",
-steps:[
-"Google Flow ကို ဖွင့်ပါ။",
-"Video ဖန်တီးမယ့် Project ကို ဝင်ပါ။",
-"Image-to-Video သို့မဟုတ် ပုံထည့်ပြီး Video ဖန်တီးနိုင်တဲ့ Mode ကို ရွေးပါ။",
-"ChatGPT / Gemini မှာ သိမ်းထားတဲ့ Scene ပုံကို Upload လုပ်ပါ။",
-"လှုပ်ရှားမှု Prompt ကို ထည့်ပါ။",
-"Generate လုပ်ပြီး ရလဒ်ကို စစ်ပါ။"
-],
-example:"Animate the uploaded image.\n\nPreserve the exact same character identity, face, hairstyle and clothing from the reference image. The boy slowly turns his head toward the girl and speaks naturally. Keep the background consistent. Realistic human movement, subtle facial expressions, smooth camera movement. Do not redesign the character.",
-tip:"Flow ကို ဇာတ်ကောင်ပုံအသစ် ဖန်တီးဖို့ မသုံးဘဲ မူရင်း Scene ပုံကို လှုပ်ရှားစေဖို့ အသုံးပြုပါ။ Flow ရဲ့ Version အလိုက် ခလုတ်အမည်နဲ့ လုပ်ဆောင်ပုံ ကွာနိုင်ပါတယ်။",
-task:"ChatGPT / Gemini မှာ ထုတ်ထားတဲ့ Scene ပုံတစ်ပုံကို Flow ထဲ Upload လုပ်ပြီး Video ထုတ်ကြည့်ပါ။"
-},
-{
-title:"Flow မှာ Scene တစ်ခုချင်း Video ထုတ်နည်း",
-cat:"Google Flow",icon:"🎥",
-intro:"Scene ပုံတစ်ပုံကို Video တစ်ခုအဖြစ် ထုတ်ပါ။ ပထမ Scene အဆင်ပြေမှ ဒုတိယ Scene ကို ဆက်လုပ်ပါ။ Prompt မှာ ဇာတ်ကောင်ရဲ့ မျက်နှာနဲ့ အဝတ်အစား မပြောင်းဖို့ အမြဲထည့်ပါ။",
-steps:[
-"Scene 1 ပုံကို Upload လုပ်ပါ။",
-"လှုပ်ရှားမှုတစ်ခု သို့မဟုတ် နှစ်ခုသာ ရေးပါ။",
-"Camera လှုပ်ရှားမှုကို လိုအပ်သလို သတ်မှတ်ပါ။",
-"စကားပြောသူတစ်ယောက်တည်းဆိုရင် Only the boy speaks လို့ ရေးပါ။",
-"Video ထုတ်ပြီး မျက်နှာ၊ လက်၊ ပါးစပ်နဲ့ လှုပ်ရှားမှု စစ်ပါ။",
-"Scene 2၊ Scene 3 ကိုလည်း သီးခြားထုတ်ပါ။"
-],
-example:"Animate this exact reference image into an 8-second cinematic video.\n\nThe boy gently raises his right hand and looks toward the girl. The boy speaks in Burmese: “မင်္ဂလာပါ၊ နေကောင်းလား။” Only the boy speaks. The girl remains silent. Preserve the exact face, hairstyle and clothes. No subtitles, no on-screen text, no watermark.",
-task:"၈ စက္ကန့်ခန့် Scene Video တစ်ခု ထုတ်ပြီး ရလဒ်ကို စစ်ပါ။"
-},
-{
-title:"မြန်မာစကားပြောနဲ့ Lip Sync",
-cat:"အသံနှင့် စကားပြော",icon:"🗣️",
-intro:"ဇာတ်ကောင်တစ်ယောက်ချင်းစီကို အလှည့်ကျ စကားပြောစေပါ။ စကားပြောသူ ဘယ်သူလဲ၊ တခြားသူတွေ ဘာလုပ်နေလဲ၊ စကားပြောစာသားက ဘာလဲဆိုတာ တိတိကျကျ ရေးရပါမယ်။",
-steps:[
-"Scene တစ်ခုမှာ စကားပြောသူတစ်ယောက်တည်းထားနိုင်ရင် ပိုလွယ်ပါတယ်။",
-"The boy speaks in Burmese ဆိုပြီး စပါ။",
-"စကားပြောစာသားကို မူရင်းအတိုင်း ကိုးကားထဲထည့်ပါ။",
-"Only the boy speaks. The girl stays silent လို့ ထည့်ပါ။",
-"မြန်မာအသံထွက် မမှန်ရင် အသံကို သီးခြားထုတ်ပြီး Editor မှာ ထည့်နိုင်ပါတယ်။"
-],
-example:"The boy speaks in Burmese with a natural, gentle voice: “အောင်အောင်ရေ ဘာလုပ်နေတာလဲ။”\n\nOnly the boy speaks. The girl listens and does not move her lips. Accurate lip sync, natural facial expression. Do not change the dialogue.",
-tip:"AI က မြန်မာစကားကို မှန်ကန်စွာ အသံထွက်မပေးနိုင်တဲ့အခါ မြန်မာအသံကို သီးခြားအသံသွင်းပြီး Video Editor မှာ ပေါင်းထည့်နိုင်ပါတယ်။",
-task:"စကားပြောသူတစ်ယောက်နဲ့ နားထောင်သူတစ်ယောက်ပါဝင်တဲ့ Prompt တစ်ခုရေးပါ။"
-},
-{
-title:"Scene အများကြီးကို ဆက်စပ်အောင်လုပ်နည်း",
-cat:"ဇာတ်လမ်းတည်ဆောက်ခြင်း",icon:"🔗",
-intro:"Scene တစ်ခုနဲ့တစ်ခု ဆက်စပ်ဖို့ အချိန်၊ နေရာ၊ အဝတ်အစားနဲ့ ဇာတ်ကောင်လှုပ်ရှားမှုတွေ ဆက်တိုက်ဖြစ်နေဖို့ လိုပါတယ်။ Scene 1 အဆုံးမှာ ဘယ်နေရာကို ကြည့်နေလဲဆိုတာ Scene 2 အစမှာ ဆက်ထားပါ။",
-steps:[
-"Scene 1 အဆုံးက လှုပ်ရှားမှုကို မှတ်ထားပါ။",
-"Scene 2 အစမှာ အဲဒီလှုပ်ရှားမှုကို ဆက်ပါ။",
-"နေ့/ည၊ နောက်ခံ၊ အဝတ်အစား မပြောင်းအောင် သတ်မှတ်ပါ။",
-"Scene တစ်ခုချင်းစီရဲ့ Reference ပုံကို စစ်ပါ။",
-"တစ်ဆက်တည်း မဖြစ်ရင် ဖြတ်တောက်မှု သို့မဟုတ် Transition သုံးပါ။"
-],
-example:"Continue from the previous scene.\n\nKeep the same characters, same clothing, same time of day and same location. Begin with the boy looking toward the doorway, continuing the action naturally from the previous shot.",
-task:"Scene 1 နဲ့ Scene 2 အတွက် ဆက်စပ်နေတဲ့ လှုပ်ရှားမှု Prompt နှစ်ခုရေးပါ။"
-},
-{
-title:"Video တွေကို ပေါင်းစပ်တည်းဖြတ်နည်း",
-cat:"တည်းဖြတ်ခြင်း",icon:"✂️",
-intro:"Flow မှာ ထုတ်ထားတဲ့ Video အပိုင်းတွေကို YouTube Create သို့မဟုတ် ကိုယ်သုံးတဲ့ Video Editor ထဲမှာ ထည့်ပြီး အစဉ်လိုက် ပေါင်းစပ်ပါ။ အသံ၊ စာတန်းနဲ့ နောက်ခံတေးဂီတကိုလည်း လိုအပ်သလို ထည့်နိုင်ပါတယ်။",
-steps:[
-"Video Editor ကို ဖွင့်ပါ။",
-"Scene Video တွေကို Import လုပ်ပါ။",
-"Timeline ပေါ်မှာ Scene 1၊ Scene 2၊ Scene 3 အစဉ်လိုက်ထားပါ။",
-"မလိုတဲ့ အပိုင်းတွေ ဖြတ်ပါ။",
-"အသံနဲ့ စကားပြောကို ကိုက်ညီအောင် ချိန်ပါ။",
-"နောက်ခံတေးဂီတကို စကားပြောသံ မဖုံးအောင် အသံလျှော့ပါ။"
-],
-example:"Editing checklist:\n\nChronological scene order. Clean cuts. Consistent color tone. Dialogue clearly audible. Background music lower than speech. Vertical 9:16 frame.",
-task:"အနည်းဆုံး Video အပိုင်း ၂ ခုကို Editor ထဲမှာ ပေါင်းစပ်ကြည့်ပါ။"
-},
-{
-title:"၁ မိနစ်မှ ၃ မိနစ် ဇာတ်လမ်းတို စီစဉ်နည်း",
-cat:"ဇာတ်လမ်းရှည်",icon:"⏱️",
-intro:"၁ မိနစ်စာ Video တစ်ခုမှာ ၈–၁၀ စက္ကန့် Scene ၆ ခန်းမှ ၈ ခန်းခန့် လိုနိုင်ပါတယ်။ ၃ မိနစ်စာဆိုရင် Scene ပိုများလာမှာဖြစ်လို့ ဇာတ်ညွှန်းကို အရင်ခွဲပြီး တစ်ခန်းချင်း ထုတ်ပါ။",
-steps:[
-"ဇာတ်လမ်းအစ၊ အလယ်၊ အဆုံး သတ်မှတ်ပါ။",
-"တစ်ခန်းချင်း ကြာချိန် သတ်မှတ်ပါ။",
-"Scene တစ်ခုချင်းစီမှာ Dialogue နဲ့ လှုပ်ရှားမှု ရှင်းလင်းပါစေ။",
-"ဇာတ်ကောင် Reference ပုံတွေကို မပြောင်းဘဲ ပြန်သုံးပါ။",
-"Scene အားလုံးပြီးမှ Editor မှာ ပေါင်းစပ်ပါ။"
-],
-example:"Plan a 2-minute short film as 15 scenes, each around 8 seconds. Keep a clear beginning, conflict, emotional turning point and ending. Preserve exact Burmese dialogue and character consistency.",
-task:"၁ မိနစ်စာ ဇာတ်လမ်းအတွက် Scene အနည်းဆုံး ၆ ခန်း စာရင်းလုပ်ပါ။"
-},
-{
-title:"ပြဿနာဖြေရှင်းခြင်းနှင့် နောက်ဆုံး Project",
-cat:"လက်တွေ့ Project",icon:"🏆",
-intro:"ပုံမတူတာ၊ မျက်နှာပြောင်းတာ၊ Video မထွက်တာ၊ စကားပြောမမှန်တာတွေ ဖြစ်နိုင်ပါတယ်။ Prompt ကို ပိုရှင်းအောင်ရေးပြီး Reference ပုံကို ပြန်ထည့်ပါ။ အားလုံးပြီးရင် ကိုယ်ပိုင်ဇာတ်လမ်းတိုတစ်ခု အပြီးသတ်ဖန်တီးပါ။",
-steps:[
-"မျက်နှာပြောင်းရင် မူရင်း Reference ပုံကို ပြန်ထည့်ပါ။",
-"Prompt ရှည်လွန်းရင် အဓိကလုပ်ဆောင်ချက်ကိုပဲ ထားပါ။",
-"Video မထွက်ရင် ပုံအရည်အသွေး၊ အင်တာနက်နဲ့ Tool အခြေအနေ စစ်ပါ။",
-"စကားပြောမမှန်ရင် Dialogue ကို တစ်ကြောင်းချင်း ခွဲပါ။",
-"နောက်ဆုံး Video ကို 1080p နဲ့ Export လုပ်ပါ။",
-"ကိုယ်ပိုင်ဖန်တီးထားတဲ့ Project ကို သိမ်းထားပါ။"
-],
-example:"Review this scene for character consistency, clear action, natural movement and exact Burmese dialogue. Do not alter the character identity or rewrite any spoken line.",
-tip:"ပြီးသွားတဲ့ Video ကို ကိုယ်ပိုင် TikTok သို့မဟုတ် YouTube Channel မှာ တင်နိုင်ပါတယ်။",
-task:"အနည်းဆုံး ၁ မိနစ်စာ ကိုယ်ပိုင် AI ဇာတ်လမ်းတိုတစ်ခု ဖန်တီးပြီး အပြီးသတ်ပါ။"
-}
-];
-
-/* ==========================================================
-   2) STATE  (Firebase ချိတ်ရင် ဒီနေရာကို အစားထိုးပါ)
-   ========================================================== */
-
-const LESSONS_KEY = "lw_lessons_v4";
-try {
-  const savedLessons = JSON.parse(localStorage.getItem(LESSONS_KEY) || "null");
-  if (Array.isArray(savedLessons) && savedLessons.length) lessons = savedLessons;
-} catch(e) {}
-
-const KEY = { done:"lw_done_v3", media:"lw_media_v3", admin:"lw_admin_v3", aiKey:"lw_aikey_v3", aiModel:"lw_aimodel_v3" };
-
-const state = {
-  done:  safeParse(localStorage.getItem(KEY.done), []),
-  media: safeParse(localStorage.getItem(KEY.media), {}),
-  isAdmin: sessionStorage.getItem(KEY.admin) === "1"
+const firebaseConfig = {
+  apiKey: "AIzaSyAou0HLlJEhcarQw0FocghOPw9AAMsZlq8",
+  authDomain: "mm-golden-game.firebaseapp.com",
+  databaseURL: "https://mm-golden-game-default-rtdb.firebaseio.com",
+  projectId: "mm-golden-game",
+  storageBucket: "mm-golden-game.firebasestorage.app",
+  messagingSenderId: "502185650154",
+  appId: "1:502185650154:web:8419088df32a6e29a57493",
+  measurementId: "G-3K0MEYCQQP"
 };
-
-function safeParse(v, fb){ try{ return v ? JSON.parse(v) : fb; }catch(e){ return fb; } }
-
-function saveDone(){
-  localStorage.setItem(KEY.done, JSON.stringify(state.done));
-}
-function getMedia(i){
-  const m = state.media[i] || {};
-  return { videos: m.videos || [], images: m.images || [] };
-}
-function saveMedia(){
-  try{ localStorage.setItem(KEY.media, JSON.stringify(state.media)); return true; }
-  catch(e){ return false; }
-}
-function isUnlocked(i){ return i === 0 || state.done.includes(i-1); }
-function progressPct(){ return Math.round(state.done.length / lessons.length * 100); }
-
-/* ==========================================================
-   3) ROUTER  —  သင်ခန်းစာနှိပ်ရင် စာမျက်နှာအသစ် (hash route)
-   ========================================================== */
-window.addEventListener("hashchange", render);
-window.addEventListener("DOMContentLoaded", render);
-
-function render(){
-  const raw = location.hash.replace(/^#\/?/, "");
-  const [route, param] = raw.split("/");
-
-  if(route === "lesson"){
-    renderLesson(parseInt(param, 10));
-  } else if(route === "admin"){
-    if(!state.isAdmin){ openModal(); location.hash = "#/"; return; }
-    renderAdmin();
-  } else {
-    renderHome();
-  }
-  window.scrollTo(0, 0);
-  document.getElementById("adminBtn").textContent = state.isAdmin ? "🛠 Admin Panel" : "Admin ဝင်ရန်";
-}
-
-/* ==========================================================
-   4) VIEWS
-   ========================================================== */
-const view = () => document.getElementById("view");
-
-function renderHome(){
-  view().innerHTML = `
-    ${heroHTML()}
-    ${progressHTML()}
-    <div class="layout">
-      ${sidebarHTML(-1)}
-      <main class="main">
-        <div class="empty">
-          <div style="font-size:64px">🎬</div>
-          <h2>AI Video Class မှ ကြိုဆိုပါတယ်</h2>
-          <p>ဘယ်ဘက်က သင်ခန်းစာတစ်ခုကို ရွေးချယ်ပါ။</p>
-          <div style="margin-top:18px">
-            <a class="btn gold" href="#/lesson/${nextUnfinished()}">ဆက်လက်လေ့လာမယ် ↗</a>
-          </div>
-        </div>
-      </main>
-    </div>`;
-  bindSearch();
-}
-
-function heroHTML(){
-  return `
-  <section class="hero">
-    <div>
-      <small>မင်္ဂလာပါ 👋 AI Creator</small>
-      <h1>AI Video ဖန်တီးမှုမှာ<br>ကျွမ်းကျင်သူ ဖြစ်လာဖို့</h1>
-      <p>ChatGPT / Gemini မှာ ပုံဖန်တီးခြင်း၊ Character ပုံစံထိန်းခြင်း၊ Google Flow မှာ Video ထုတ်ခြင်းနဲ့ ဇာတ်လမ်းတို ဖန်တီးခြင်းတို့ကို အဆင့်လိုက် သင်ယူပါ။</p>
-      <a class="btn gold" style="margin-top:10px;display:inline-block" href="#/lesson/${nextUnfinished()}">ဆက်လက်လေ့လာမယ် ↗</a>
-    </div>
-    <div class="hero-cards">
-      <div class="skill"><small>01</small><b>AI ပုံဖန်တီးခြင်း</b><span>🖼️</span></div>
-      <div class="skill"><small>02</small><b>Character Lock</b><span>👤</span></div>
-      <div class="skill"><small>03</small><b>Flow Video</b><span>🎬</span></div>
-    </div>
-  </section>`;
-}
-
-function progressHTML(){
-  const p = progressPct();
-  return `
-  <div class="progress">
-    <div class="progress-label"><span>သင်ယူမှုတိုးတက်မှု</span><b>${p}% ပြီးစီး</b></div>
-    <div class="bar"><div class="fill" style="width:${p}%"></div></div>
-  </div>`;
-}
-
-function sidebarHTML(active){
-  return `
-  <aside class="side">
-    <div class="side-brand">LearnWell</div>
-    <div class="side-title"><b>📚 သင်ခန်းစာများ</b><span>${lessons.length} ဆင့်</span></div>
-    <div class="lesson-list" id="lessonList">
-      ${lessons.map((l,i)=>lessonBtnHTML(l,i,active)).join("")}
-    </div>
-    <div class="note">🔒 အရင်အဆင့်ပြီးမှ နောက်အဆင့် ဖွင့်ပါမယ်။</div>
-  </aside>`;
-}
-
-function lessonBtnHTML(l, i, active){
-  const done = state.done.includes(i);
-  const open = isUnlocked(i);
-  const cls = "lesson-btn" + (i===active?" active":"") + (done?" done":"") + (open?"":" locked");
-  const inner = `<span class="num">${done?"✓":i+1}</span>
-    <span><strong>${esc(l.title)}</strong>
-    <small>${!open ? "🔒 ပိတ်ထားသည်" : (done ? "ပြီးစီး ✓" : "လေ့လာရန်")}</small></span>`;
-  if(!open) return `<div class="${cls}" data-title="${esc(l.title.toLowerCase())}">${inner}</div>`;
-  return `<a class="${cls}" href="#/lesson/${i}" data-title="${esc(l.title.toLowerCase())}">${inner}</a>`;
-}
-
-function renderLesson(i){
-  const l = lessons[i];
-  if(!l){ location.hash = "#/"; return; }
-
-  if(!isUnlocked(i)){
-    view().innerHTML = `
-      <div class="layout">
-        ${sidebarHTML(-1)}
-        <main class="main">
-          <div class="empty">
-            <div style="font-size:60px">🔒</div>
-            <h2>ဒီသင်ခန်းစာ ပိတ်ထားပါတယ်</h2>
-            <p>အရင်အဆင့်ကို အရင်ပြီးဆုံးအောင် လုပ်ပါ။</p>
-            <a class="btn gold" href="#/lesson/0" style="margin-top:14px;display:inline-block">အစမှ စမယ်</a>
-          </div>
-        </main>
-      </div>`;
-    bindSearch();
-    return;
-  }
-
-  const m = getMedia(i);
-  const done = state.done.includes(i);
-  const isLast = i === lessons.length - 1;
-
-  const videoBlock = m.videos.length
-    ? m.videos.map(v=>`<div style="margin-bottom:14px">${videoHTML(v)}</div>`).join("")
-    : `<p style="font-size:13px;color:var(--muted)">Admin မှ Video မထည့်ရသေးပါ။</p>`;
-
-  const imageBlock = m.images.length
-    ? `<div class="section"><h3>🖼️ သင်ခန်းစာ ပုံများ</h3>
-         <div class="gallery">${m.images.map(src=>`<img src="${src}" onclick="openLightbox('${src}')" alt="lesson image">`).join("")}</div>
-       </div>`
-    : "";
-
-  view().innerHTML = `
-  <div class="layout">
-    ${sidebarHTML(i)}
-    <main class="main">
-      <a class="btn back" href="#/">← Dashboard သို့ ပြန်သွားရန်</a>
-
-      <span class="tag">အဆင့် ${i+1} · ${esc(l.cat)}</span>
-      <h2>${esc(l.title)}</h2>
-      <div class="meta">LEARNWELL AI VIDEO CLASS · ${i+1} / ${lessons.length}</div>
-
-      <div class="cover"><span>${l.icon}</span><b>AI VIDEO<br>LEARNING CLASS</b></div>
-
-      <div class="intro">${esc(l.intro)}</div>
-
-      <div class="section">
-        <h3>📘 အဆင့်လိုက် လုပ်ဆောင်ရန်</h3>
-        <ol>${l.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
-      </div>
-
-      ${l.tip ? `<div class="tip">💡 <b>အရေးကြီးတဲ့အချက်</b><br>${esc(l.tip)}</div>` : ""}
-
-      ${l.example ? `<div class="section">
-        <h3>🧠 လက်တွေ့ Prompt / ဥပမာ</h3>
-        <div class="prompt" id="promptText">${esc(l.example)}</div>
-        <div class="copyrow"><button class="copy" onclick="copyPrompt()">📋 Prompt ကူးယူရန်</button></div>
-      </div>` : ""}
-
-      <div class="section">
-        <h3>🎯 လက်တွေ့လေ့ကျင့်ခန်း</h3>
-        <div class="task">
-          ${esc(l.task)}
-          <label><input type="checkbox" id="taskCheck" ${done?"checked":""}> ဒီအဆင့်ကို လက်တွေ့လုပ်ပြီးပါပြီ။</label>
-        </div>
-      </div>
-
-      <div class="video">
-        <h3>🎬 သင်ခန်းစာ Video</h3>
-        ${videoBlock}
-      </div>
-
-      ${imageBlock}
-
-      <div class="nav">
-        ${i>0 ? `<a class="btn" href="#/lesson/${i-1}">← အရင်အဆင့်</a>` : `<span></span>`}
-        <button class="btn gold" onclick="completeLesson(${i})">
-          ${done ? (isLast ? "ပြီးဆုံးပါပြီ 🏆" : "နောက်အဆင့် →") : "အဆင့်ပြီးပြီ →"}
-        </button>
-      </div>
-    </main>
-  </div>`;
-  bindSearch();
-}
-
-/* ==========================================================
-   5) ACTIONS
-   ========================================================== */
-function nextUnfinished(){
-  for(let i=0;i<lessons.length;i++){ if(!state.done.includes(i)) return i; }
-  return lessons.length-1;
-}
-
-function completeLesson(i){
-  const chk = document.getElementById("taskCheck");
-  if(!chk || !chk.checked){
-    alert("လက်တွေ့လုပ်ပြီးကြောင်း အမှန်ခြစ်ပေးပါ။");
-    return;
-  }
-  if(!state.done.includes(i)){
-    state.done.push(i);
-    saveDone();
-  }
-  if(i < lessons.length-1){
-    location.hash = "#/lesson/" + (i+1);
-  }else{
-    view().innerHTML = `<div class="empty" style="padding:80px 10px">
-      <div style="font-size:70px">🏆</div>
-      <h2>သင်တန်းပြီးဆုံးပါပြီ!</h2>
-      <p>ဂုဏ်ယူပါတယ်။ ကိုယ်ပိုင် AI Video Project ကို ဖန်တီးပြီးပါပြီ။</p>
-      <a class="btn gold" href="#/" style="margin-top:16px;display:inline-block">Dashboard သို့</a>
-    </div>`;
-  }
-}
-
-function copyPrompt(){
-  const t = document.getElementById("promptText")?.innerText || "";
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(t)
-      .then(()=>alert("Prompt ကူးယူပြီးပါပြီ။"))
-      .catch(()=>fallbackCopy(t));
-  }else fallbackCopy(t);
-}
-function fallbackCopy(t){
-  const ta = document.createElement("textarea");
-  ta.value = t; document.body.appendChild(ta); ta.select();
-  try{ document.execCommand("copy"); alert("Prompt ကူးယူပြီးပါပြီ။"); }
-  catch(e){ alert(t); }
-  document.body.removeChild(ta);
-}
-
-/* ---------- search ---------- */
-function bindSearch(){
-  const el = document.getElementById("search");
-  if(el && el.value) searchLessons(el.value);
-}
-function searchLessons(q){
-  const k = (q||"").toLowerCase().trim();
-  document.querySelectorAll("#lessonList [data-title]").forEach(el=>{
-    const hit = !k || el.dataset.title.includes(k);
-    el.style.display = hit ? "" : "none";
-  });
-}
-
-/* ==========================================================
-   6) ADMIN — Login / Panel / Media
-   ========================================================== */
-
-function renderLab(){
-  view().innerHTML=`
-  <a class="btn back" href="#/">← မူလစာမျက်နှာ</a>
-  <h2>🧪 လက်တွေ့စမ်းသပ်ခန်း</h2>
-  <p class="meta">ပုံတစ်ပုံရွေးပြီး Prompt ရေးပါ။ ဒီနေရာကနေ AI tool ကို တိုက်ရိုက်မထုတ်ပေးနိုင်သေးပေမယ့် Prompt ကို စစ်ဆေး၊ ကူးယူပြီး ChatGPT / Gemini / Flow မှာ စမ်းသပ်နိုင်ပါတယ်။</p>
-  <div class="lab">
-    <label>🖼️ စမ်းသပ်မယ့် Reference ပုံရွေးရန်</label>
-    <input id="labImage" type="file" accept="image/*" onchange="previewLabImage(event)">
-    <div class="lab-preview" id="labPreview"></div>
-    <label>✍️ ပုံ / Video အတွက် Prompt ရေးရန်</label>
-    <textarea id="labPrompt" placeholder="ဥပမာ - Use the uploaded reference image. Preserve the same face and clothes. The young man slowly turns toward the camera and smiles naturally. Cinematic realistic video, vertical 9:16."></textarea>
-    <div class="row" style="margin-top:10px">
-      <button class="btn gold" onclick="reviewLabPrompt()">🤖 Prompt စစ်ဆေးရန်</button>
-      <button class="btn" onclick="copyLabPrompt()">📋 Prompt ကူးရန်</button>
-      <button class="btn" onclick="openAIWithLab()">AI ကို မေးရန်</button>
-    </div>
-    <div id="labResult" class="intro" style="display:none;white-space:pre-wrap"></div>
-  </div>
-  <div class="lab">
-    <h3>🎯 စမ်းသပ်ရန် Prompt Template</h3>
-    <div class="prompt" id="labTemplate">Use the uploaded reference image as the exact character identity. Preserve the same face, hairstyle, age, skin tone and clothing. Animate only the requested action: [DESCRIBE ONE SIMPLE ACTION]. Natural human movement, subtle facial expressions, stable background, smooth camera movement. Cinematic realistic style, vertical 9:16. No subtitles, no text, no watermark.</div>
-    <div class="copyrow"><button class="copy" onclick="navigator.clipboard?.writeText(document.getElementById('labTemplate').textContent)">ကူးယူရန်</button></div>
-  </div>`;
-}
-function previewLabImage(ev){
-  const f=ev.target.files?.[0];if(!f)return;
-  const box=document.getElementById("labPreview");box.innerHTML="";
-  const img=document.createElement("img");img.src=URL.createObjectURL(f);box.appendChild(img);
-}
-function reviewLabPrompt(){
-  const p=document.getElementById("labPrompt").value.trim(),r=document.getElementById("labResult");r.style.display="block";
-  if(!p){r.textContent="Prompt ကို အရင်ရေးပါ။";return;}
-  const checks=[];
-  if(!/reference|uploaded image|same face|preserve/i.test(p))checks.push("ဇာတ်ကောင်တူညီမှုအတွက် Reference ပုံကို ထိန်းသိမ်းရန် စာသား ထည့်ပါ။");
-  if(!/action|turn|walk|move|smile|speak|raise|look/i.test(p))checks.push("လှုပ်ရှားမှုတစ်ခုကို တိတိကျကျ ဖော်ပြပါ။");
-  if(p.length>1200)checks.push("Prompt ရှည်နေပါတယ်။ အဓိကအချက်တွေကိုသာ ထားပြီး ချုံ့စမ်းပါ။");
-  if(!/no text|no subtitles|watermark/i.test(p))checks.push("စာတန်းမလိုပါက No subtitles, no text, no watermark ထည့်ပါ။");
-  r.textContent=checks.length?"စစ်ဆေးချက်များ:\n• "+checks.join("\n• "):"ကောင်းပါတယ်။ Reference ပုံ၊ လှုပ်ရှားမှု၊ ပုံစံနဲ့ မလိုချင်တဲ့အရာတွေ ပါဝင်နေပါတယ်။";
-}
-function copyLabPrompt(){const p=document.getElementById("labPrompt").value;if(p)navigator.clipboard?.writeText(p).then(()=>alert("Prompt ကူးပြီးပါပြီ။"));}
-function openAIWithLab(){const p=document.getElementById("labPrompt").value;toggleAI();document.getElementById("aiInput").value="ဒီ Prompt ကို စစ်ဆေးပြီး Video ထွက်နိုင်အောင် ပြင်ပေးပါ:\n"+p;document.getElementById("aiInput").focus();}
-
-function adminAction(){
-  if(state.isAdmin){ location.hash = "#/admin"; render(); }
-  else openModal();
-}
-function openModal(){
-  document.getElementById("adminPass").value = "";
-  document.getElementById("adminError").textContent = "";
-  document.getElementById("modal").classList.add("show");
-  setTimeout(()=>document.getElementById("adminPass").focus(), 100);
-}
-function closeModal(){ document.getElementById("modal").classList.remove("show"); }
-
-function doLogin(){
-  const v = document.getElementById("adminPass").value;
-  if(v === ADMIN_PASSWORD){
-    state.isAdmin = true;
-    sessionStorage.setItem(KEY.admin, "1");
-    closeModal();
-    location.hash = "#/admin";
-    render();
-  }else{
-    document.getElementById("adminError").textContent = "Password မှားနေပါတယ်။";
-  }
-}
-
-function renderAdmin(){
-  if(!state.isAdmin){ location.hash="#/"; render(); return; }
-  view().innerHTML = `
-  <a class="btn back" href="#/">← မူလစာမျက်နှာ</a>
-  <h2>⚙️ သင်ခန်းစာ စီမံခန့်ခွဲမှု</h2>
-  <p class="meta">သင်ခန်းစာအသစ်ထည့်ခြင်း၊ စာသားပြင်ခြင်း၊ ပုံ / Video ထည့်ခြင်းများကို ဒီနေရာကနေ လုပ်နိုင်ပါတယ်။ သိမ်းထားမှုသည် လက်ရှိ Browser ထဲတွင်သာ ဖြစ်ပါတယ်။</p>
-  <div class="admin-toolbar">
-    <button class="btn gold" onclick="newLesson()">＋ သင်ခန်းစာအသစ်</button>
-    <button class="btn" onclick="exportLessons()">⬇ သင်ခန်းစာ Backup ထုတ်ရန်</button>
-    <label class="btn" style="cursor:pointer">⬆ Backup ပြန်သွင်းရန်<input type="file" accept="application/json" style="display:none" onchange="importLessons(event)"></label>
-    <button class="btn" onclick="logoutAdmin()">🚪 Admin ထွက်မယ်</button>
-  </div>
-  <div class="lesson-editor-card">
-    <h3>✨ AI နဲ့ သင်ခန်းစာကို ပြင်ဆင်ရန်</h3>
-    <p class="meta">ပြင်ချင်တဲ့အကြောင်းကို ရေးပြီး AI ကို မေးနိုင်ပါတယ်။ AI က ပြင်ဆင်ထားတဲ့ စာသားကို ပေးပါမယ်။ အတည်ပြုပြီးမှ အောက်က Editor ထဲမှာ သိမ်းပါ။</p>
-    <textarea id="adminAIRequest" placeholder="ဥပမာ - အဆင့် ၃ ကို စတင်သူနားလည်လွယ်အောင် ပိုအသေးစိတ်ရှင်းပြပြီး လက်တွေ့လုပ်ဆောင်ချက်ပါ ထည့်ပေးပါ။"></textarea>
-    <div class="row" style="margin-top:8px"><button class="btn gold" onclick="askAdminAI()">🤖 AI ကို ပြင်ခိုင်းမယ်</button><button class="btn" onclick="toggleAI()">AI Chat ဖွင့်ရန်</button></div>
-    <div id="adminAIResult" class="intro" style="display:none;white-space:pre-wrap"></div>
-  </div>
-  <div id="lessonEditors">
-  ${lessons.map((l,i)=>lessonEditorHTML(l,i)).join("")}
-  </div>`;
-}
-function lessonEditorHTML(l,i){
-  const m=getMedia(i);
-  return `<div class="lesson-editor-card" id="lesson-editor-${i}">
-    <div class="admin-head"><span class="num">${i+1}</span><b>${esc(l.title||"ခေါင်းစဉ်မရှိ")}</b></div>
-    <div class="editor-grid">
-      <div><label>သင်ခန်းစာခေါင်းစဉ်</label><input id="le-title-${i}" value="${esc(l.title||"")}"></div>
-      <div><label>အမျိုးအစား / အဆင့်အုပ်စု</label><input id="le-cat-${i}" value="${esc(l.cat||"")}"></div>
-      <div class="wide"><label>မိတ်ဆက်စာ</label><textarea id="le-intro-${i}">${esc(l.intro||"")}</textarea></div>
-      <div class="wide"><label>သင်ကြားမည့် အဆင့်များ (တစ်ကြောင်းလျှင် တစ်ချက်)</label><textarea id="le-steps-${i}">${esc((l.steps||[]).join("\n"))}</textarea></div>
-      <div class="wide"><label>နမူနာ Prompt / Example</label><textarea id="le-example-${i}">${esc(l.example||"")}</textarea></div>
-      <div class="wide"><label>အကြံပြုချက် / Tip</label><textarea id="le-tip-${i}">${esc(l.tip||"")}</textarea></div>
-      <div class="wide"><label>လက်တွေ့လုပ်ဆောင်ရန်</label><textarea id="le-task-${i}">${esc(l.task||"")}</textarea></div>
-      <div><label>Icon (Emoji)</label><input id="le-icon-${i}" value="${esc(l.icon||"📘")}"></div>
-    </div>
-    <div class="field"><label>🎬 Video Link များ (တစ်ကြောင်းစီ — YouTube / MP4)</label>
-      <textarea id="vid-${i}" placeholder="https://www.youtube.com/watch?v=...">${esc(m.videos.join("\n"))}</textarea>
-    </div>
-    <div class="field"><label>🖼️ သင်ခန်းစာပုံများ ထည့်ရန် (အများကြီးရွေးနိုင်)</label>
-      <input type="file" accept="image/*" multiple onchange="uploadImages(event,${i})">
-      ${m.images.length?`<div class="thumbs">${m.images.map((s,k)=>`<div class="thumb"><img src="${s}" onclick="openLightbox('${s}')" alt=""><button onclick="removeImage(${i},${k})">✕</button></div>`).join("")}</div>`:"<p class='meta'>ပုံမထည့်ရသေးပါ။</p>"}
-    </div>
-    <div class="row">
-      <button class="btn gold" onclick="saveLesson(${i})">💾 သင်ခန်းစာ သိမ်းမယ်</button>
-      <button class="btn" onclick="moveLesson(${i},-1)">↑ အပေါ်ရွှေ့</button>
-      <button class="btn" onclick="moveLesson(${i},1)">↓ အောက်ရွှေ့</button>
-      <button class="btn" onclick="saveVideos(${i})">🎬 Video သိမ်းမယ်</button>
-      <button class="btn" style="border-color:#9c4b4b;color:#ffb1b1" onclick="deleteLesson(${i})">🗑 ဖျက်မယ်</button>
-    </div>
-  </div>`;
-}
-function persistLessons(){
-  try{localStorage.setItem(LESSONS_KEY,JSON.stringify(lessons));return true;}
-  catch(e){alert("သိမ်းဆည်းရန် Browser နေရာမလုံလောက်ပါ။ ပုံ/Video ဖိုင်ကြီးများကို Link ဖြင့်သုံးပါ။");return false;}
-}
-function saveLesson(i){
-  const val=id=>document.getElementById(id)?.value||"";
-  lessons[i]={...lessons[i],title:val(`le-title-${i}`).trim()||"ခေါင်းစဉ်မရှိ",cat:val(`le-cat-${i}`),intro:val(`le-intro-${i}`),steps:val(`le-steps-${i}`).split(/\n+/).map(x=>x.trim()).filter(Boolean),example:val(`le-example-${i}`),tip:val(`le-tip-${i}`),task:val(`le-task-${i}`),icon:val(`le-icon-${i}`)||"📘"};
-  persistLessons(); alert("သင်ခန်းစာ သိမ်းပြီးပါပြီ။"); renderAdmin();
-}
-function newLesson(){
-  lessons.push({title:"သင်ခန်းစာအသစ်",cat:"အထွေထွေ",icon:"📘",intro:"",steps:["ပထမအဆင့်"],example:"",tip:"",task:"လက်တွေ့စမ်းသပ်ပါ။"});
-  persistLessons(); renderAdmin(); document.getElementById(`lesson-editor-${lessons.length-1}`)?.scrollIntoView({behavior:"smooth"});
-}
-function deleteLesson(i){
-  if(!confirm("ဒီသင်ခန်းစာကို ဖျက်မှာ သေချာပါသလား?"))return;
-  lessons.splice(i,1); state.media={}; persistLessons(); saveMedia(); renderAdmin();
-}
-function moveLesson(i,dir){
-  const j=i+dir;if(j<0||j>=lessons.length)return;
-  [lessons[i],lessons[j]]=[lessons[j],lessons[i]];persistLessons();renderAdmin();
-}
-function exportLessons(){
-  const blob=new Blob([JSON.stringify({lessons,media:state.media},null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="learnwell-backup.json";a.click();URL.revokeObjectURL(a.href);
-}
-function importLessons(ev){
-  const f=ev.target.files?.[0];if(!f)return;
-  const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.lessons))throw 0;lessons=d.lessons;state.media=d.media||{};persistLessons();saveMedia();alert("Backup ပြန်သွင်းပြီးပါပြီ။");renderAdmin();}catch(e){alert("Backup ဖိုင်မမှန်ပါ။");}};r.readAsText(f);
-}
-async function askAdminAI(){
-  const q=document.getElementById("adminAIRequest").value.trim();if(!q)return;
-  const out=document.getElementById("adminAIResult");out.style.display="block";out.textContent="AI စဉ်းစားနေပါတယ်…";
-  const key=localStorage.getItem(KEY.aiKey);
-  if(!key){out.textContent="AI အသုံးပြုရန် ⚙ Settings ထဲတွင် Gemini API Key ထည့်ပါ။ AI Chat ကိုလည်း ဖွင့်နိုင်ပါတယ်။";return;}
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(), db=firebase.database(), storage=firebase.storage();
+let currentUser=null,isAdmin=false,approved=false,completed={},lessons=[],products=[],adminTab='overview';
+const $=id=>document.getElementById(id);
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),3200)}
+function safe(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showPage(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));$(id)?.classList.add('active');$('menu').classList.remove('show');if(id==='lessons')renderLessons();if(id==='shop')renderProducts();if(id==='admin')renderAdmin()}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showPage(b.dataset.goto));
+$('menuBtn').onclick=()=>$('menu').classList.toggle('show');
+$('closeModal').onclick=()=>$('modal').classList.remove('show');
+function openModal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.add('show')}
+function requireLogin(){if(!currentUser){toast('အရင်ဆုံး အကောင့်ဝင်ပါ။');showPage('account');return false}return true}
+async function uploadFile(file,path){if(!file)return '';const ref=storage.ref().child(path+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_'));const snap=await ref.put(file);return await snap.ref.getDownloadURL()}
+async function loadData(){
   try{
-    const answer=await askGemini("သင်တန်း Admin အတွက် သင်ခန်းစာပြင်ဆင်ရန် အကူအညီပေးပါ။ လိုအပ်ချက်: "+q+"\nလက်ရှိသင်ခန်းစာခေါင်းစဉ်များ: "+lessons.map((x,i)=>(i+1)+". "+x.title).join("\n")+"\nမြန်မာလို အသေးစိတ်၊ လက်တွေ့လုပ်ဆောင်နိုင်အောင် ပြင်ဆင်ထားသော စာသားပေးပါ။",key);
-    out.textContent=answer;
-  }catch(e){out.textContent="AI ချိတ်ဆက်မှု မအောင်မြင်ပါ။ API Key / Model / Internet ကို စစ်ပါ။";}
+    const [ls,ps]=await Promise.all([db.ref('lessons').once('value'),db.ref('products').once('value')]);
+    lessons=Object.entries(ls.val()||{}).map(([id,v])=>({id,...v})).sort((a,b)=>(a.order||0)-(b.order||0));
+    products=Object.entries(ps.val()||{}).map(([id,v])=>({id,...v}));
+    renderLessons();renderProducts();
+  }catch(e){toast('Firebase data မဖတ်နိုင်ပါ: '+e.message)}
 }
-
-function logoutAdmin(){
-  state.isAdmin = false;
-  sessionStorage.removeItem(KEY.admin);
-  location.hash = "#/";
-  render();
+async function refreshUser(){
+  if(!currentUser)return;
+  try{
+    await db.ref('users/'+currentUser.uid).update({
+      email:currentUser.email||'',
+      displayName:currentUser.displayName||'',
+      photoURL:currentUser.photoURL||'',
+      provider:currentUser.providerData?.[0]?.providerId||'password',
+      lastSeen:firebase.database.ServerValue.TIMESTAMP
+    });
+    const [ad,en,co]=await Promise.all([
+      db.ref('admins/'+currentUser.uid).once('value'),
+      db.ref('enrollments/'+currentUser.uid).once('value'),
+      db.ref('progress/'+currentUser.uid).once('value')
+    ]);
+    isAdmin=ad.val()===true;const ev=en.val()||{};approved=ev.status==='approved';completed=co.val()||{};
+    $('adminMenu').classList.toggle('hidden',!isAdmin);
+    $('authPanel').classList.add('hidden');$('userPanel').classList.remove('hidden');
+    $('userEmail').textContent=currentUser.displayName||currentUser.email;$('userPhoto').src=currentUser.photoURL||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Ccircle cx=%2224%22 cy=%2224%22 r=%2224%22 fill=%22%23bd8526%22/%3E%3Ctext x=%2224%22 y=%2232%22 text-anchor=%22middle%22 font-size=%2224%22 fill=%22%2317120a%22%3E✦%3C/text%3E%3C/svg%3E';$('userRole').textContent=isAdmin?'Administrator':approved?'သင်တန်းခွင့်ပြုထားသည်': 'ပုံမှန်အသုံးပြုသူ';
+    renderLessons();
+  }catch(e){toast('အကောင့်အချက်အလက် မရရှိပါ။')}
 }
-
-function saveVideos(i){
-  const raw = document.getElementById("vid-"+i).value || "";
-  const list = raw.split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const m = getMedia(i);
-  m.videos = list;
-  state.media[i] = m;
-  if(saveMedia()) alert("Video သိမ်းပြီးပါပြီ။ (" + list.length + " ခု)");
-  else alert("သိမ်းရန် နေရာ မလုံလောက်ပါ။");
-  renderAdmin();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:'select_account'});
+$('googleBtn').onclick=async()=>{
+  try{
+    $('googleBtn').disabled=true;
+    await auth.signInWithPopup(googleProvider);
+    toast('Google အကောင့်ဖြင့် ဝင်ရောက်ပြီးပါပြီ။');
+  }catch(e){
+    if(e.code==='auth/popup-blocked' || e.code==='auth/operation-not-supported-in-this-environment'){
+      try{await auth.signInWithRedirect(googleProvider)}catch(err){toast(err.message)}
+    }else if(e.code==='auth/popup-closed-by-user'){toast('Google Login ကို ပိတ်လိုက်ပါပြီ။')}
+    else{toast('Google Login မအောင်မြင်ပါ: '+e.message)}
+  }finally{$('googleBtn').disabled=false}
+};
+auth.getRedirectResult().catch(e=>toast('Google Login Error: '+e.message));
+$('signupBtn').onclick=async()=>{try{const email=$('email').value.trim(),pw=$('password').value;if(!email)throw Error('Email ထည့်ပေးပါ။');if(pw.length<6)throw Error('Password အနည်းဆုံး ၆ လုံးရှိရပါမယ်။');await auth.createUserWithEmailAndPassword(email,pw);toast('အကောင့်ဖွင့်ပြီးပါပြီ။');}catch(e){toast(e.message)}};
+$('loginBtn').onclick=async()=>{try{const email=$('email').value.trim(),pw=$('password').value;if(!email||!pw)throw Error('Email နဲ့ Password ဖြည့်ပေးပါ။');await auth.signInWithEmailAndPassword(email,pw)}catch(e){toast(e.message)}};
+$('logoutBtn').onclick=()=>auth.signOut();
+auth.onAuthStateChanged(async u=>{currentUser=u;isAdmin=false;approved=false;completed={};if(u){await refreshUser();$('authPanel').classList.add('hidden');$('userPanel').classList.remove('hidden')}else{$('authPanel').classList.remove('hidden');$('userPanel').classList.add('hidden');$('adminMenu').classList.add('hidden')}renderLessons()});
+$('applyBtn').onclick=()=>{if(!requireLogin())return;openModal('သင်တန်းလျှောက်ရန်',`
+<div class="notice">KPay 09979646972 (Naung Thu Tun)<br>WavePay 09769797203<br><b class="gold">သင်တန်းကြေး 20,000 Ks</b></div>
+<div class="field"><label>ငွေလွှဲအမည်</label><input id="payName"></div>
+<div class="field"><label>ငွေလွှဲခဲ့သော ဖုန်းနံပါတ်</label><input id="payPhone"></div>
+<div class="field"><label>Transaction ID / ငွေလွှဲအမှတ်</label><input id="payTxn"></div>
+<div class="field"><label>ငွေလွှဲ Screenshot</label><input id="payProof" type="file" accept="image/*"></div>
+<button class="btn" id="sendEnroll">လျှောက်လွှာပို့မည်</button>`);$('sendEnroll').onclick=async()=>{
+ try{const name=$('payName').value.trim(),phone=$('payPhone').value.trim(),txn=$('payTxn').value.trim(),file=$('payProof').files[0];if(!name||!phone||!txn||!file)throw Error('အချက်အလက်အားလုံးနှင့် Screenshot ထည့်ပေးပါ။');
+ const proof=await uploadFile(file,'payment-proofs/'+currentUser.uid);
+ await db.ref('enrollments/'+currentUser.uid).set({uid:currentUser.uid,email:currentUser.email,name,phone,txn,proof,status:'pending',amount:20000,createdAt:firebase.database.ServerValue.TIMESTAMP});
+ $('modal').classList.remove('show');toast('လျှောက်လွှာပို့ပြီးပါပြီ။ Admin အတည်ပြုချက်ကို စောင့်ပါ။');renderLessons();
+ }catch(e){toast(e.message)}
+}}
+function renderLessons(){
+ const list=$('lessonList');if(!list)return;
+ const canSee=approved||isAdmin;
+ $('enrollCard').classList.toggle('hidden',canSee);$('lessonProgress').classList.toggle('hidden',!canSee);
+ $('enrollState').textContent=isAdmin?'ADMIN':approved?'ခွင့်ပြုထားသည်':'ငွေပေးသွင်းရန်';
+ if(!canSee){list.innerHTML='<div class="card"><p class="muted">သင်ခန်းစာများကို ကြည့်ရှုရန် သင်တန်းကြေးပေးသွင်းပြီး Admin ခွင့်ပြုချက်ရယူပါ။</p></div>';return}
+ const done=lessons.filter(x=>completed[x.id]).length;$('progressText').textContent=done+' / 5';$('progressBar').style.width=(done/5*100)+'%';
+ list.innerHTML=lessons.map((l,i)=>{const unlocked=isAdmin||i===0||!!completed[lessons[i-1]?.id],isDone=!!completed[l.id];return `<div class="card"><div class="lesson-row"><div class="lesson-main"><div class="num">${i+1}</div><div><span class="tag">LESSON ${i+1}</span><h3>${safe(l.title||'သင်ခန်းစာ')}</h3></div></div><span class="pill">${isDone?'ပြီးဆုံး':unlocked?'ဖွင့်နိုင်':'🔒 ပိတ်ထား'}</span></div><p class="muted">${safe(l.description||'')}</p><button class="btn ${unlocked?'':'secondary'}" ${unlocked?'':'disabled'} onclick="openLesson('${l.id}')">${isDone?'ပြန်လေ့လာရန်':'သင်ခန်းစာဖွင့်ရန်'}</button></div>`}).join('')||'<div class="card">Admin က သင်ခန်းစာ မထည့်ရသေးပါ။</div>';
 }
-
-async function uploadImages(ev, i){
-  const files = Array.from(ev.target.files || []);
-  ev.target.value = "";
-  if(!files.length) return;
-
-  const before = JSON.stringify(state.media);
-  const m = getMedia(i);
-
-  for(const f of files){
-    if(!f.type.startsWith("image/")) continue;
-    try{ m.images.push(await compressImage(f)); }
-    catch(e){ console.warn("compress failed", e); }
-  }
-
-  state.media[i] = m;
-  if(!saveMedia()){
-    state.media = safeParse(before, {});
-    saveMedia();
-    alert("သိမ်းရန် နေရာ မလုံလောက်ပါ။ ပုံအရေအတွက် လျှော့ပြီး ပြန်စမ်းပါ။");
-  }
-  renderAdmin();
+window.openLesson=async id=>{const idx=lessons.findIndex(x=>x.id===id),l=lessons[idx];if(!l)return;const unlocked=isAdmin||idx===0||!!completed[lessons[idx-1]?.id];if(!unlocked){toast('အရင်သင်ခန်းစာကို ပြီးဆုံးအောင် လေ့လာပါ။');return}
+ let media='';if(l.image)media+=`<img class="thumb" src="${safe(l.image)}" alt="lesson image">`;if(l.video)media+=`<video class="media" controls src="${safe(l.video)}"></video>`;
+ openModal(l.title||'သင်ခန်းစာ',`${media}<div style="white-space:pre-wrap;line-height:1.9;margin:14px 0">${safe(l.content||'')}</div>${l.link?`<p><a href="${safe(l.link)}" target="_blank" rel="noopener">သက်ဆိုင်ရာ Link ဖွင့်ရန်</a></p>`:''}<button class="btn" id="finishLesson">${completed[id]?'ပြီးဆုံးထားသည်':'ဒီသင်ခန်းစာ ပြီးဆုံးပါပြီ'}</button>`);
+ $('finishLesson').onclick=async()=>{try{await db.ref('progress/'+currentUser.uid+'/'+id).set(true);completed[id]=true;$('modal').classList.remove('show');renderLessons();toast('သင်ခန်းစာပြီးဆုံးပါပြီ။')}catch(e){toast(e.message)}}
+};
+function renderProducts(){$('productList').innerHTML=products.map(p=>`<div class="card">${p.image?`<img class="thumb" src="${safe(p.image)}">`:''}<span class="tag">SHOP ITEM</span><h3>${safe(p.name||'ပစ္စည်း')}</h3><div class="gold" style="font-weight:900;font-size:20px">${safe(p.price||'ဈေးနှုန်းမဖော်ပြထား')}</div><p class="muted">${safe(p.description||'')}</p><button class="btn" onclick="buyProduct('${p.id}')">ဝယ်ယူရန်</button></div>`).join('')||'<div class="card">Admin က ပစ္စည်း မတင်ရသေးပါ။</div>'}
+window.buyProduct=id=>{if(!requireLogin())return;const p=products.find(x=>x.id===id);if(!p)return;openModal('ပစ္စည်းဝယ်ယူရန်',`<h3>${safe(p.name)}</h3><p class="gold">${safe(p.price||'')}</p><p class="muted">${safe(p.description||'')}</p><div class="notice">ငွေလွှဲရန်: ${safe(p.payPhone||'Admin မှ မသတ်မှတ်ရသေးပါ')}<br>ငွေလွှဲပြီးနောက် အောက်ပါအချက်အလက်များ ဖြည့်ပါ။</div><div class="field"><label>ဆက်သွယ်ရန် ဖုန်းနံပါတ်</label><input id="orderPhone"></div><div class="field"><label>ငွေလွှဲ Transaction ID</label><input id="orderTxn"></div><div class="field"><label>Screenshot</label><input id="orderProof" type="file" accept="image/*"></div><button class="btn" id="sendOrder">အော်ဒါတင်မည်</button>`);$('sendOrder').onclick=async()=>{try{const phone=$('orderPhone').value.trim(),txn=$('orderTxn').value.trim(),file=$('orderProof').files[0];if(!phone||!txn||!file)throw Error('ဖုန်း၊ Transaction ID နှင့် Screenshot လိုအပ်ပါသည်။');const proof=await uploadFile(file,'order-proofs/'+currentUser.uid);await db.ref('orders').push({uid:currentUser.uid,email:currentUser.email,productId:id,productName:p.name,price:p.price||'',phone,txn,proof,status:'pending',createdAt:firebase.database.ServerValue.TIMESTAMP});$('modal').classList.remove('show');toast('အော်ဒါတင်ပြီးပါပြီ။ Admin ဆက်သွယ်လာပါမည်။')}catch(e){toast(e.message)}}};
+$('improveBtn').onclick=()=>{const v=$('aiInput').value.trim();if(!v)return toast('Prompt ထည့်ပေးပါ။');$('aiOutput').value=`Create a high-quality cinematic AI video based on this idea:\n${v}\n\nVisual style: realistic, natural human movement, detailed environment, cinematic lighting.\nCamera: smooth and stable camera movement, clear composition.\nCharacter consistency: keep the same face, hairstyle, clothing and body proportions in every shot.\nAudio: use only the requested dialogue, with clear natural speech.\nFormat: vertical 9:16, 10 seconds. No subtitles, no text, no watermark.\n\nမှတ်ချက် - သင်လိုချင်တဲ့ ဇာတ်ကောင်၊ နေရာ၊ စကားပြောစာသားကို မပြောင်းဘဲ ပိုမိုရှင်းလင်းအောင် စီစဉ်ထားပါတယ်။`};
+$('errorBtn').onclick=()=>{const v=$('aiInput').value.trim();if(!v)return toast('Error သို့မဟုတ် Prompt ထည့်ပေးပါ။');let tips=[];if(v.length<20)tips.push('Prompt တိုလွန်းနိုင်ပါတယ်။ ဇာတ်ကောင်၊ လုပ်ဆောင်ချက်၊ နေရာနှင့် ကင်မရာအကြောင်း ထည့်ပါ။');if(/text|subtitle|watermark/i.test(v))tips.push('စာသား/Subtitle/Watermark ကို မလိုချင်ပါက Negative prompt အဖြစ် “No text, no subtitles, no watermark” ထည့်ပါ။');if(/same|consistent|character/i.test(v))tips.push('ဇာတ်ကောင်တစ်ယောက်ချင်းစီ၏ မျက်နှာ၊ ဆံပင်၊ အဝတ်အစားကို Character Lock ဖြင့် တိတိကျကျ သတ်မှတ်ပါ။');tips.push('အထွက်မရပါက Prompt ကို ရိုးရှင်းအောင် လျှော့ပါ၊ တစ်ခန်းလျှင် လုပ်ဆောင်ချက်တစ်ခုသာ ထည့်ပါ။');tips.push('စကားပြောသူများကို သီးခြားခွဲရေးပြီး ဘယ်သူပြောသည်ကို ရှင်းလင်းစွာ သတ်မှတ်ပါ။');$('aiOutput').value='စစ်ဆေးချက်များ\\n\\n• '+tips.join('\\n\\n• ')+'\\n\\nသတိပြုရန် - ဒီစစ်ဆေးမှုသည် အခြေခံအကြံပြုချက်သာဖြစ်ပြီး သင့် AI Video Platform ၏ တကယ့် Error Log ကို မဖတ်နိုင်ပါ။'};
+$('clearAi').onclick=()=>{$('aiInput').value='';$('aiOutput').value=''};$('copyAi').onclick=async()=>{try{await navigator.clipboard.writeText($('aiOutput').value);toast('Copy ကူးပြီးပါပြီ။')}catch(e){toast('Copy မရပါ။ စာသားကို ကိုယ်တိုင်ရွေးကူးပါ။')}};
+document.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>{adminTab=b.dataset.adminTab;renderAdmin()});
+async function renderAdmin(){
+ if(!isAdmin){$('adminContent').innerHTML='<div class="card">Admin ခွင့်ပြုချက် မရှိပါ။</div>';return}
+ const root=$('adminContent');
+ if(adminTab==='overview'){const [u,e,o]=await Promise.all([db.ref('users').once('value'),db.ref('enrollments').once('value'),db.ref('orders').once('value')]);root.innerHTML=`<div class="grid"><div class="card"><span class="tag">USERS</span><h2>${Object.keys(u.val()||{}).length}</h2><p class="muted">အသုံးပြုသူများ</p></div><div class="card"><span class="tag">ENROLLMENTS</span><h2>${Object.keys(e.val()||{}).length}</h2><p class="muted">သင်တန်းလျှောက်လွှာများ</p></div><div class="card"><span class="tag">ORDERS</span><h2>${Object.keys(o.val()||{}).length}</h2><p class="muted">ဆိုင်အော်ဒါများ</p></div></div>`}
+ if(adminTab==='lessons'){root.innerHTML=`<div class="card"><h3>သင်ခန်းစာ အသစ်ထည့်ရန် / ပြင်ရန်</h3><div class="field"><label>သင်ခန်းစာ နံပါတ် (1-5)</label><select id="lOrder">${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join('')}</select></div><div class="field"><label>ခေါင်းစဉ်</label><input id="lTitle"></div><div class="field"><label>အကျဉ်းချုပ်</label><input id="lDesc"></div><div class="field"><label>သင်ခန်းစာ စာသား</label><textarea id="lContent"></textarea></div><div class="field"><label>ပုံ ထည့်ရန်</label><input id="lImage" type="file" accept="image/*"></div><div class="field"><label>Video ထည့်ရန်</label><input id="lVideo" type="file" accept="video/*"></div><div class="field"><label>ပြင်ပ Link (ရွေးချယ်နိုင်)</label><input id="lLink"></div><button class="btn" id="saveLesson">သိမ်းမည်</button></div><div class="grid" style="margin-top:12px">${lessons.map(l=>`<div class="card"><b>${safe(l.order)}. ${safe(l.title)}</b><div class="actions"><button class="btn secondary" onclick="editLesson('${l.id}')">ပြင်ရန်</button><button class="btn danger" onclick="deleteLesson('${l.id}')">ဖျက်ရန်</button></div></div>`).join('')}</div>`;$('saveLesson').onclick=saveLesson}
+ if(adminTab==='products'){root.innerHTML=`<div class="card"><h3>ပစ္စည်းအသစ်တင်ရန်</h3><div class="field"><label>ပစ္စည်းအမည်</label><input id="pName"></div><div class="field"><label>ဈေးနှုန်း</label><input id="pPrice" placeholder="ဥပမာ 15000 Ks"></div><div class="field"><label>အကြောင်းအရာ</label><textarea id="pDesc"></textarea></div><div class="field"><label>ပစ္စည်းပုံ</label><input id="pImage" type="file" accept="image/*"></div><div class="field"><label>ငွေလွှဲဖုန်းနံပါတ် (ဒီပစ္စည်းအတွက်)</label><input id="pPay" placeholder="KPay / WavePay"></div><button class="btn" id="saveProduct">ပစ္စည်းတင်မည်</button></div><div class="grid" style="margin-top:12px">${products.map(p=>`<div class="card"><b>${safe(p.name)}</b><p class="gold">${safe(p.price)}</p><button class="btn danger" onclick="deleteProduct('${p.id}')">ဖျက်ရန်</button></div>`).join('')}</div>`;$('saveProduct').onclick=saveProduct}
+ if(adminTab==='requests'){const snap=await db.ref('enrollments').once('value'),items=Object.entries(snap.val()||{});root.innerHTML=items.map(([uid,x])=>`<div class="card"><div class="split"><b>${safe(x.name||x.email)}</b><span class="pill">${safe(x.status)}</span></div><p class="muted">${safe(x.email)}<br>ဖုန်း: ${safe(x.phone)}<br>Txn: ${safe(x.txn)}</p>${x.proof?`<a href="${safe(x.proof)}" target="_blank" rel="noopener">ငွေလွှဲ Screenshot ကြည့်ရန်</a>`:''}<div class="actions"><button class="btn" onclick="approveEnroll('${uid}')">ခွင့်ပြုမည်</button><button class="btn danger" onclick="rejectEnroll('${uid}')">ပယ်ဖျက်မည်</button></div></div>`).join('')||'<div class="card">လျှောက်လွှာ မရှိသေးပါ။</div>'}
+ if(adminTab==='orders'){const snap=await db.ref('orders').once('value'),items=Object.entries(snap.val()||{});root.innerHTML=items.map(([id,x])=>`<div class="card"><b>${safe(x.productName)}</b><span class="pill">${safe(x.status)}</span><p class="muted">${safe(x.email)}<br>ဖုန်း: ${safe(x.phone)}<br>Txn: ${safe(x.txn)}<br>ဈေး: ${safe(x.price)}</p>${x.proof?`<a href="${safe(x.proof)}" target="_blank" rel="noopener">Screenshot ကြည့်ရန်</a>`:''}<div class="actions"><button class="btn" onclick="updateOrder('${id}','approved')">အတည်ပြု</button><button class="btn danger" onclick="updateOrder('${id}','rejected')">ပယ်ဖျက်</button><a class="btn secondary" href="https://t.me/zypher998" target="_blank" rel="noopener">ဆက်သွယ်ရန်</a></div></div>`).join('')||'<div class="card">အော်ဒါ မရှိသေးပါ။</div>'}
 }
-
-function removeImage(i, k){
-  if(!confirm("ဒီပုံကို ဖျက်မလား?")) return;
-  const m = getMedia(i);
-  m.images.splice(k, 1);
-  state.media[i] = m;
-  saveMedia();
-  renderAdmin();
-}
-
-function clearAllMedia(){
-  if(!confirm("Video နဲ့ ပုံ အားလုံးကို ဖျက်မလား?")) return;
-  state.media = {};
-  saveMedia();
-  renderAdmin();
-}
-
-/* ပုံကို ချုံ့ပြီး dataURL အဖြစ် ပြောင်း (localStorage သက်သာအောင်) */
-function compressImage(file, maxW = 1000, quality = 0.72){
-  return new Promise((resolve, reject)=>{
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = ()=>{
-      try{
-        const scale = Math.min(1, maxW / img.width);
-        const c = document.createElement("canvas");
-        c.width  = Math.max(1, Math.round(img.width * scale));
-        c.height = Math.max(1, Math.round(img.height * scale));
-        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url);
-        resolve(c.toDataURL("image/jpeg", quality));
-      }catch(e){ reject(e); }
-    };
-    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error("image load error")); };
-    img.src = url;
-  });
-}
-
-/* ---------- video embed helper ---------- */
-function videoHTML(url){
-  if(!url) return "";
-  let id = "";
-  if(url.includes("youtube.com/watch?v=")) id = url.split("v=")[1].split("&")[0];
-  else if(url.includes("youtu.be/")) id = url.split("youtu.be/")[1].split("?")[0];
-  else if(url.includes("youtube.com/shorts/")) id = url.split("shorts/")[1].split("?")[0];
-  else if(url.includes("youtube.com/embed/")) id = url.split("embed/")[1].split("?")[0];
-
-  if(id) return `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen loading="lazy"></iframe>`;
-  if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) return `<video src="${url}" controls preload="metadata"></video>`;
-  return `<a href="${url}" target="_blank" rel="noopener">Video ကြည့်ရန် ↗</a>`;
-}
-
-/* ---------- lightbox ---------- */
-function openLightbox(src){
-  document.getElementById("lightboxImg").src = src;
-  document.getElementById("lightbox").classList.add("show");
-}
-function closeLightbox(){ document.getElementById("lightbox").classList.remove("show"); }
-
-/* ---------- utils ---------- */
-function esc(s){
-  return String(s==null?"":s)
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-}
-
-/* ==========================================================
-   7) AI ASSISTANT
-   ========================================================== */
-const KB = [
-  {
-    keys:["မျက်နှာ","မတူ","ကွဲ","face","character","ဇာတ်ကောင်","ပြောင်း"],
-    title:"🧑 ဇာတ်ကောင် / မျက်နှာ မတူတဲ့ပြဿနာ",
-    body:`အဖြစ်အများဆုံး ပြဿနာပါ။ ဒီ ၄ ချက်ကို လိုက်နာပါ —
-
-၁။ အတည်ပြုထားတဲ့ Reference ပုံကို Scene တိုင်းမှာ ပြန်ထည့်ပါ။
-၂။ Prompt မှာ ဒီစာသား ထည့်ပါ —
-
-"Use the uploaded reference image as the exact character identity. Preserve the same face, eyes, nose, hairstyle, hair color, age, skin tone and clothing. Do not redesign or reinterpret the character. Only change pose, expression, action, camera angle or background."
-
-၃။ ဇာတ်ကောင်နာမည်ကို Prompt မှာ မသုံးပါနဲ့ — boy / girl / young man လို label သုံးပါ။
-၄။ ပုံတစ်ပုံထဲ လူအများကြီး မထည့်ပါနဲ့။ တစ်ယောက်ချင်း ထုတ်ပါ။`
-  },
-  {
-    keys:["စကားပြော","lip","sync","အသံ","voice","ပါးစပ်","မကိုက်","မမှန်"],
-    title:"🗣️ စကားပြော / Lip Sync မကိုက်တဲ့ပြဿနာ",
-    body:`မြန်မာစကားနဲ့ ပါးစပ်လှုပ်ရှားမှု မကိုက်တာ AI မှာ ဖြစ်လေ့ရှိပါတယ်။
-
-၁။ Scene တစ်ခုမှာ စကားပြောသူ တစ်ယောက်တည်း ထားပါ။
-၂။ Prompt ပုံစံ —
-
-"The boy speaks in Burmese with a natural voice: ""မင်္ဂလာပါ နေကောင်းလား။"" Only the boy speaks. The girl listens and does not move her lips. Accurate lip sync."
-
-၃။ ၈ စက္ကန့်မှာ စာကြောင်း ၁–၂ ကြောင်းပဲ ထည့်ပါ။ ရှည်ရင် မကိုက်ပါ။
-၄။ မြန်မာအသံထွက် မမှန်ရင် အသံကို သီးခြားသွင်းပြီး Editor မှာ ပေါင်းထည့်ပါ။`
-  },
-  {
-    keys:["video မထွက်","မထွက်","error","error","flow","ပိတ်","refresh"],
-    title:"🎥 Video မထွက်တဲ့အခါ",
-    body:`ဒီအဆင့်တွေ စစ်ပါ —
-
-၁။ အင်တာနက် ကောင်းမွန်မှု စစ်ပါ။
-၂။ ပုံအရည်အသွေး အနည်းဆုံး 720px ရှိပါစေ။ သေးလွန်းရင် မထွက်တတ်ပါ။
-၃။ ပုံကို 9:16 ဒေါင်လိုက် ပုံစံ ဖြစ်စေပါ။
-၄။ Prompt ရှည်လွန်းရင် အတိုချုံ့ပါ။
-၅။ Page ကို Refresh လုပ်ပြီး ပြန်စမ်းပါ။
-၆။ Chrome Browser နဲ့ ပြောင်းစမ်းပါ။
-၇။ မရသေးရင် ပုံကို ပြန်ချုံ့ (compress) ပြီး ပြန် Upload လုပ်ပါ။`
-  },
-  {
-    keys:["prompt","ပြင်","ရေးနည်","ဘယ်လိုရေး"],
-    title:"✍️ Prompt ရေးနည်း (ပုံဖန်တီးရန်)",
-    body:`Prompt ဖော်မြူလာ ၅ ပိုင်း —
-
-[1] လူပုံစံ — အသက်၊ လူမျိုး၊ မျက်နှာ၊ ဆံပင်
-[2] အဝတ်အစား
-[3] နေရာ / နောက်ခံ
-[4] လှုပ်ရှားမှု / အမူအရာ
-[5] ပုံစံ — realistic photography, cinematic lighting, vertical 9:16
-
-ဥပမာ —
-"A 22-year-old Myanmar young man, short neat black hair, gentle face, wearing a white shirt and dark longyi, standing near a village tea shop in the evening, looking toward the road. Cinematic realistic photography, natural lighting, vertical 9:16. One person only. No text, no watermark."
-
-အမြဲထည့်ရန် — "One person only. No text, no watermark."`
-  },
-  {
-    keys:["scene","ခွဲ","ဇာတ်ညွှန်း","story","ဇာတ်လမ်း"],
-    title:"🧩 ဇာတ်ညွှန်းကို Scene ခွဲနည်း",
-    body:`ဇာတ်ညွှန်းကို AI ဆီပေးပြီး ဒီလို ခိုင်းပါ —
-
-"Convert my Burmese story into 8-second video scenes.
-
-For each scene provide: location, visible characters using generic labels such as boy, girl, mother, father; action; camera movement; and exact Burmese dialogue.
-
-Do not rewrite or shorten dialogue. Do not use character names as speaker labels. Character names may appear only inside the quoted spoken dialogue."
-
-ရလဒ်ကို Scene 1၊ Scene 2 စသဖြင့် ခွဲပြီး တစ်ခန်းချင်း ပုံထုတ်ပါ။`
-  },
-  {
-    keys:["flow","reference","upload","ထည့်"],
-    title:"🌊 Google Flow အသုံးပြုနည်း",
-    body:`၁။ ပုံကို ChatGPT / Gemini မှာ အရင်ထုတ်ပြီး သိမ်းပါ။
-၂။ Flow ကို ဖွင့်ပြီး Project ထဲ ဝင်ပါ။
-၃။ Image-to-Video Mode ရွေးပါ။
-၄။ Scene ပုံကို Upload လုပ်ပါ။
-၅။ လှုပ်ရှားမှု Prompt ထည့်ပါ —
-
-"Animate the uploaded image. Preserve the exact same character identity, face, hairstyle and clothing. The boy slowly turns his head and speaks naturally. Realistic human movement, smooth camera movement. Do not redesign the character."
-
-၆။ Generate လုပ်ပြီး မျက်နှာ၊ လက်၊ ပါးစပ် စစ်ပါ။`
-  }
-];
-
-const AI_WELCOME = `မင်္ဂလာပါ 👋 ကျွန်တော်က LearnWell AI ပါ။
-
-ဒီသင်ခန်းစာတွေထဲက Prompt တွေ၊ ပြဿနာဖြေရှင်းနည်းတွေကို အခြေခံပြီး ကူညီပေးနိုင်ပါတယ်။
-
-ဥပမာ —
-• "မျက်နှာ မတူဘူး ဘယ်လိုလုပ်ရမလဲ"
-• "စကားပြော မကိုက်ဘူး"
-• "Prompt ပြင်ပေးပါ"
-
-မေးချင်တာ ရေးလိုက်ပါ။`;
-
-let aiHistory = [];
-
-function toggleAI(){
-  const p = document.getElementById("aiPanel");
-  p.classList.toggle("show");
-  if(p.classList.contains("show") && !aiHistory.length){
-    pushMsg("bot", AI_WELCOME);
-  }
-}
-function toggleAISet(){
-  const s = document.getElementById("aiSet");
-  s.classList.toggle("show");
-  if(s.classList.contains("show")){
-    document.getElementById("aiKey").value = localStorage.getItem(KEY.aiKey) || "";
-    document.getElementById("aiModel").value = localStorage.getItem(KEY.aiModel) || "gemini-2.0-flash";
-  }
-}
-function saveAISet(){
-  localStorage.setItem(KEY.aiKey, document.getElementById("aiKey").value.trim());
-  localStorage.setItem(KEY.aiModel, document.getElementById("aiModel").value.trim() || "gemini-2.0-flash");
-  document.getElementById("aiSet").classList.remove("show");
-  pushMsg("bot", "သိမ်းပြီးပါပြီ။ API Key ထည့်ထားရင် တကယ့် AI နဲ့ ဖြေပါမယ်။");
-}
-
-function pushMsg(who, text){
-  aiHistory.push({who, text});
-  const body = document.getElementById("aiBody");
-  const d = document.createElement("div");
-  d.className = "msg " + who;
-  d.textContent = text;
-  body.appendChild(d);
-  body.scrollTop = body.scrollHeight;
-}
-
-function quickAsk(q){
-  document.getElementById("aiInput").value = q;
-  sendAI(null);
-}
-
-async function sendAI(ev){
-  if(ev) ev.preventDefault();
-  const input = document.getElementById("aiInput");
-  const q = input.value.trim();
-  if(!q) return;
-  input.value = "";
-  pushMsg("user", q);
-
-  const key = localStorage.getItem(KEY.aiKey);
-  if(key){
-    pushMsg("bot", "⏳ စဉ်းစားနေပါတယ်...");
-    const body = document.getElementById("aiBody");
-    const typing = body.lastChild;
-    try{
-      const ans = await askGemini(q, key);
-      typing.remove();
-      pushMsg("bot", ans);
-      return;
-    }catch(e){
-      typing.remove();
-      pushMsg("bot", "⚠️ AI နဲ့ ချိတ်ဆက်မရပါ။ သင်ခန်းစာအခြေခံ အဖြေပေးလိုက်ပါမယ်။");
-    }
-  }
-
-  const local = localAnswer(q);
-  setTimeout(()=>pushMsg("bot", local), 250);
-}
-
-function localAnswer(q){
-  const t = q.toLowerCase();
-  for(const item of KB){
-    if(item.keys.some(k => t.includes(k.toLowerCase()))){
-      return item.title + "\n\n" + item.body;
-    }
-  }
-  return `ဒီမေးခွန်းကို သင်ခန်းစာထဲမှာ တိုက်ရိုက် မတွေ့ပါဘူး။ ဒီလို မေးကြည့်နိုင်ပါတယ် —
-
-• "မျက်နှာ မတူဘူး"
-• "စကားပြော မကိုက်ဘူး"
-• "Video မထွက်ဘူး"
-• "Prompt ရေးနည်"
-• "Scene ခွဲနည်း"
-• "Flow သုံးနည်း"
-
-ဒါမှမဟုတ် ⚙ Settings မှာ Gemini API Key ထည့်ထားရင် ပိုပြီး ကျယ်ကျယ်ပြန့်ပြန့် ဖြေပေးနိုင်ပါတယ်။`;
-}
-
-async function askGemini(q, key){
-  const model = localStorage.getItem(KEY.aiModel) || "gemini-2.0-flash";
-  const sys = `You are LearnWell AI, a capable Burmese-first creative and technical assistant for AI video makers.
-Help with broad questions, story ideas, complete scripts, scene breakdowns, image prompts, image-to-video prompts, character consistency, Burmese dialogue and lip-sync, editing, troubleshooting, and HTML/CSS/JavaScript code.
-Rules:
-- Reply in clear, friendly Burmese. Explain technical English words in Burmese when useful.
-- Give practical, detailed steps suitable for a learner. Do not pretend a tool can do something it cannot.
-- For video failures, diagnose likely causes and provide a corrected short prompt plus settings/checklist.
-- When writing prompts, provide a clean copy-ready English prompt separately from Burmese explanation.
-- Preserve the user's exact Burmese dialogue unless asked to rewrite it.
-- Use generic character labels (boy, girl, mother, father) in visual prompt descriptions; names may remain inside quoted dialogue.
-- For consistent characters, instruct the user to attach the same reference image and preserve face, hair, age and clothes.
-- For code requests, provide complete working HTML when feasible and do not remove unrelated existing features.
-- If information is missing, ask one focused question instead of guessing.`;
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,
-    {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        contents:[{ role:"user", parts:[{ text: sys + "\n\nUser question: " + q }] }],
-        generationConfig:{ temperature:0.75, maxOutputTokens:2200 }
-      })
-    }
-  );
-  if(!res.ok) throw new Error("API " + res.status);
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map(p=>p.text).join("\n").trim();
-  if(!text) throw new Error("empty");
-  return text;
-}
-
-/* ---------- keyboard ---------- */
-document.addEventListener("keydown", e=>{
-  if(e.key === "Escape"){
-    closeLightbox(); closeModal();
-    document.getElementById("aiPanel").classList.remove("show");
-  }
-});
+async function saveLesson(){try{const order=Number($('lOrder').value),old=lessons.find(x=>Number(x.order)===order);const image=await uploadFile($('lImage').files[0],'lesson-images'),video=await uploadFile($('lVideo').files[0],'lesson-videos');const data={order,title:$('lTitle').value.trim(),description:$('lDesc').value.trim(),content:$('lContent').value,link:$('lLink').value.trim(),image:image||(old?.image||''),video:video||(old?.video||'')};if(!data.title)throw Error('ခေါင်းစဉ်ထည့်ပါ။');if(old)await db.ref('lessons/'+old.id).update(data);else await db.ref('lessons').push(data);await loadData();toast('သင်ခန်းစာ သိမ်းပြီးပါပြီ။');renderAdmin()}catch(e){toast(e.message)}}
+window.editLesson=id=>{const l=lessons.find(x=>x.id===id);if(!l)return;$('lOrder').value=l.order;$('lTitle').value=l.title||'';$('lDesc').value=l.description||'';$('lContent').value=l.content||'';$('lLink').value=l.link||'';toast('အချက်အလက်များ ဖြည့်ပြီးပါပြီ။ ပြင်ဆင်ပြီး သိမ်းပါ။')};
+window.deleteLesson=async id=>{if(confirm('ဒီသင်ခန်းစာကို ဖျက်မှာ သေချာပါသလား။')){await db.ref('lessons/'+id).remove();await loadData();renderAdmin();toast('ဖျက်ပြီးပါပြီ။')}};
+async function saveProduct(){try{const name=$('pName').value.trim();if(!name)throw Error('ပစ္စည်းအမည်ထည့်ပါ။');const image=await uploadFile($('pImage').files[0],'product-images');await db.ref('products').push({name,price:$('pPrice').value.trim(),description:$('pDesc').value.trim(),image,payPhone:$('pPay').value.trim(),createdAt:firebase.database.ServerValue.TIMESTAMP});await loadData();renderAdmin();toast('ပစ္စည်းတင်ပြီးပါပြီ။')}catch(e){toast(e.message)}}
+window.deleteProduct=async id=>{if(confirm('ပစ္စည်းကို ဖျက်မလား။')){await db.ref('products/'+id).remove();await loadData();renderAdmin()}};
+window.approveEnroll=async uid=>{await db.ref('enrollments/'+uid+'/status').set('approved');if(uid===currentUser.uid)approved=true;toast('သင်တန်းခွင့်ပြုပြီးပါပြီ။');renderAdmin()};
+window.rejectEnroll=async uid=>{await db.ref('enrollments/'+uid+'/status').set('rejected');toast('လျှောက်လွှာ ပယ်ဖျက်ပြီးပါပြီ။');renderAdmin()};
+window.updateOrder=async(id,status)=>{await db.ref('orders/'+id+'/status').set(status);toast('အော်ဒါအခြေအနေ ပြောင်းပြီးပါပြီ။');renderAdmin()};
+$('language').onchange=e=>{document.documentElement.lang=e.target.value;toast(e.target.value==='en'?'Some content remains in Burmese in this starter version.':'ဘာသာစကားပြောင်းရန် UI အခြေခံပြင်ဆင်ပြီးပါပြီ။')};
+loadData();
 </script>
  </body>
 </html>
